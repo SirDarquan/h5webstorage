@@ -3,7 +3,7 @@ import {NgModel, NgClass} from "angular2/common";
 import {TodoList} from "./todoList";
 import {TodoItemModel} from "./todoItem";
 import {TodoHeading} from "./todoHeading";
-import {LocalStorage, LOCAL_STORAGE_PROVIDER, StorageProperty} from "../../src/webstorage";
+import {LocalStorage, LOCAL_STORAGE_PROVIDER, StorageProperty} from "../../src/api";
 import {JsonPipe} from "./JsonPipe";
 
 @Component({

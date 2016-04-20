@@ -1,6 +1,6 @@
 import {Component, Input} from "angular2/core";
 import {NgFor} from "angular2/common";
-import {LocalStorage, StorageProperty} from "../../src/webstorage";
+import {LocalStorage, StorageProperty} from "../../src/api";
 import {TodoItem, TodoItemModel} from "./todoItem";
 import {CreateItem} from "./createItem";
 

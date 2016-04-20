@@ -1,6 +1,6 @@
 import {Component, Output, EventEmitter, ViewChildren, QueryList, AfterViewInit, Input} from "angular2/core";
 import {NgFor, NgModel, NgIf} from "angular2/common";
-import {LOCAL_STORAGE_PROVIDER, LocalStorage, ConfigureStorage} from "../../src/webstorage";
+import {LOCAL_STORAGE_PROVIDER, LocalStorage, ConfigureStorage} from "../../src/api";
 
 @Component({
 	selector: "todo-heading",
