@@ -1,6 +1,6 @@
 {
-  "name": "html5/webstorage",
-  "version": "1.0.0",
+  "name": "h5webstorage",
+  "version": "0.1.0",
   "description": "",
   "main": "webstorage.js",
   "scripts": {

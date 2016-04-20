@@ -1,7 +1,7 @@
 {
-  "name": "h5api",
-  "version": "0.9.0",
-  "description": "HTML5 APIs for angular2",
+  "name": "h5webstorage",
+  "version": "0.1.0",
+  "description": "HTML5 WebStorage API for angular2",
   "scripts": {
     "postinstall": "typings install",
     "test": "echo \"Error: no test specified\" && exit 1",
