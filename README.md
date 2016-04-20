@@ -6,7 +6,7 @@
 		`npm install h5webstorage --save`	
 2.  Import the Service and the Provider:
 		```typescript
-		import {LocalStorage, LOCAL_STORAGE_PROVIDER} from "h5webstorage";
+		import {LocalStorage, LOCAL_STORAGE_PROVIDER} from "h5webstorage/api";
 		```
 3. Register the provider:
 		```typescript
@@ -47,6 +47,11 @@ local/sessionStroage objects. Here's a quick example:
 There is one minor exception: Native storage objects can use a number index
 while the wrappers can't. I've never actually seen them used this way so I
 can't imagine it's a widely used feature and I'm OK with that missing piece.
+
+Finally, the storage objects are bound both ways, so if a change occurs in
+storage, the WebStorage objects receives the change and the application is
+immediately updated.
+ 
 
 ### LocalStorage
 The `LocalStorage` object is the service that uses the localStorage object
