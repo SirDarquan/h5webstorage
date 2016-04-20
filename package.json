@@ -4,9 +4,10 @@
   "description": "HTML5 WebStorage API for angular2",
   "scripts": {
     "postinstall": "typings install",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --watch",
-    "start": "concurrently \"npm run build\" \"npm run lite\"",
+    "test": "karma start",
+    "test:c": "concurrently \"tsc --watch\" \"npm test\"",
+    "build": "tsc",
+    "start": "concurrently \"tsc --watch\" \"npm run lite\"",
     "lite": "single-page-server -p=8080 -b=./ -f=/example/index.html"
   },
   "author": "SirDarquan <https://github.com/SirDarquan>",
@@ -23,8 +24,14 @@
   "devDependencies": {
     "concurrently": "^2.0.0",
     "guid": "0.0.12",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^0.2.3",
+    "karma-jasmine": "^0.3.8",
+    "karma-systemjs": "^0.13.0",
     "single-page-server": "^0.1.0",
-    "typescript": "^1.8.0"
+    "typescript": "^1.8.0",
+    "typings": "^0.7.12"
   },
   "peerDependencies": {}
 }
