@@ -22,9 +22,15 @@
 			map:{
 				"angular2": "../node_modules/angular2",
 				"rxjs": "../node_modules/rxjs"
+			},
+			packages:{
+				"example":{
+					defaultExtension: "js",
+					main: "../../dist/example/index"
+				}
 			}
 		});
-		System.import('index')
+		System.import('example')
 				.then(null, console.error.bind(console));
 		</script>
 	</head>
