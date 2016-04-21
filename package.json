@@ -3,9 +3,11 @@
   "version": "0.2.0",
   "description": "HTML5 WebStorage API for angular2",
   "scripts": {
+    "compile": "tsc",
     "postinstall": "typings install",
-    "test": "karma start",
-    "test:c": "concurrently \"tsc --watch\" \"npm test\"",
+    "pretest": "npm run compile",
+    "test": "karma start test/karma.conf.js",
+    "test:c": "concurrently \"tsc --watch\" \"karma start --no-single-run --auto-watch \"",
     "build": "tsc",
     "start": "concurrently \"tsc --watch\" \"npm run lite\"",
     "lite": "single-page-server -p=8080 -b=./ -f=/example/index.html"
@@ -18,7 +20,6 @@
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.2",
     "systemjs": "^0.19.26",
-    "typings": "^0.7.12",
     "zone.js": "^0.6.10"
   },
   "devDependencies": {

@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: './',
+    basePath: '../',
 
 
     // frameworks to use
@@ -17,11 +17,16 @@ module.exports = function(config) {
       'karma-jasmine',
       'karma-systemjs'
     ],
+    mime:{
+      "text/x-typescript":['ts']
+    },
     
     systemjs:{
       serveFiles:[
         'node_modules/**/*.js',
         'dist/src/*.js',
+        'dist/src/*js.map',
+        'src/*.ts'
       ],
       includeFiles:[
         'node_modules/angular2/bundles/angular2-polyfills.js'
@@ -88,7 +93,7 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous
