@@ -97,8 +97,14 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
+    concurrency: Infinity,
     
+    sauceLabs:{
+      testName: "h5webstorage",
+      startConnect: false,
+      recordVideo: false,
+      recordScreenshots: false,
+    }
     
   });
   
