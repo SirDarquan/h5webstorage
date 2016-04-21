@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Output} from "angular2/core";
 import {NgModel} from "angular2/common";
-import {TodoItemModel} from "./todoitem";
+import {TodoItemModel} from "./todoItem";
 
 @Component({
 	selector: "add-item",

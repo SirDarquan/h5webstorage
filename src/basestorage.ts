@@ -15,9 +15,9 @@ export abstract class BaseStorage implements OnDestroy, Storage {
 		options = Object.assign({}, { prefix: "" }, options);
 		this.setProperty("options", options);
 
-		for (var key in storage) {
+		Object.keys(storage).forEach((key)=>{
 			if (!key.startsWith(options.prefix)) {
-				continue;
+				return;
 			}
 			var _key = this.normalizeStorageKey(key, KeyDirection.From);
 			try {
@@ -26,7 +26,7 @@ export abstract class BaseStorage implements OnDestroy, Storage {
 			catch (e) {
 				this[_key] = null;
 			}
-		}
+		});
         var subscription = ngZone.onMicrotaskEmpty.subscribe(() => this.WriteToStorage());
 		var listener = (event) => this.UpdateFromStorage(event);
 		window.addEventListener("storage", listener);
@@ -97,7 +97,14 @@ export abstract class BaseStorage implements OnDestroy, Storage {
 	}
 
 	setItem(key: string, value: string) {
-		this[key] = value;
+		try{
+			//since the value of set item has to be a string, the value may already be stringified Json.
+			//so we parse it to allow the WriteToStorage function to properly stringify object values.
+			this[key] = JSON.parse(value);
+		}
+		catch(e){
+			this[key] = value;
+		}
 	}
 
 	removeItem(key: string) {

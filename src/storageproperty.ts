@@ -1,5 +1,5 @@
-import {LocalStorage} from "./LocalStorage";
-import {SessionStorage} from "./SessionStorage";
+import {LocalStorage} from "./localstorage";
+import {SessionStorage} from "./sessionstorage";
 
 export function StorageProperty(storageKey?: string, storage: "Local" | "Session" = "Local") {
 	return (target: Object, decoratedPropertyName: string): void => {

@@ -5,7 +5,8 @@
 		"experimentalDecorators": true,
 		"sourceMap": true,
 		"target": "es5",
-		"outDir": "dist"
+		"outDir": "dist",
+		"forceConsistentCasingInFileNames": true
 	},
 	"exclude": [
 		"node_modules",
