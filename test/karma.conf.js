@@ -98,5 +98,55 @@ module.exports = function(config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
-  })
+    
+    
+  });
+  
+  if(process.env.TRAVIS){
+    config.sauceLabs.build = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')'
+    config.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
+    config.sauceLabs.customLaunchers = {
+      SL_Chrome_Prime:{
+        base: "SauceLabs",
+        browserName: "chrome",
+        version:"latest"
+      },
+      SL_Chrome_Mezzo:{
+        base: "SauceLabs",
+        browserName: "chrome",
+        version:"latest-1"
+      },
+      SL_Chrome_Omega:{
+        base: "SauceLabs",
+        browserName: "chrome",
+        version:"latest-2"
+      },
+      SL_Firefox_Prime:{
+        base: "SauceLabs",
+        browserName: "firefox",
+        version:"latest"
+      },
+      SL_Firefox_Mezzo:{
+        base: "SauceLabs",
+        browserName: "firefox",
+        version:"latest-1"
+      },
+      SL_Firefox_Omega:{
+        base: "SauceLabs",
+        browserName: "firefox",
+        version:"latest-2"
+      },
+      SL_IE:{
+        base: "SauceLabs",
+        browserName: "internet explorer",
+        version:"latest"
+      },
+      SL_Edge:{
+        base: "SauceLabs",
+        browserName: "microsoftedge",
+        version:"latest"
+      }
+    };
+    config.sauceLabs.browsers = Object.keys(config.sauceLabs.customLaunchers);
+  }
 }

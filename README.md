@@ -1,4 +1,4 @@
-# h5webstorage
+# h5webstorage [![Build Status](https://travis-ci.org/SirDarquan/h5webstorage.svg?branch=master)](https://travis-ci.org/SirDarquan/h5webstorage)
 #### Html5 WebStorage API for Angular2
 
 ## Use
