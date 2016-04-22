@@ -42,13 +42,13 @@ module.exports = function (config) {
 			base: "SauceLabs",
 			browserName: "chrome",
 			version: "latest",
-			platform: 'Linux'
+			platform: 'Windows 10'
 		},
 		SL_Chrome_Mezzo: {
 			base: "SauceLabs",
 			browserName: "chrome",
 			version: "latest-1",
-			platform: 'Linux'
+			platform: 'Windows 10'
 		},
 		SL_Chrome_Omega: {
 			base: "SauceLabs",
