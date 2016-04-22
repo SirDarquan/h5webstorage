@@ -50,6 +50,18 @@ class MockOptions implements StorageOptions {
 class MockStorage extends BaseStorage {
 	constructor(ngZone: NgZone, store: MockStore, options: MockOptions) {
 		super(ngZone, store, options);
+		//we don't use private ngZone because that will add an extra key in the class
+		this.setProperty("zone", ngZone);
+	}
+
+	detectChanges() {
+		this.getProperty<NgZone>("zone").run(() => { });
+		return this;
+	}
+
+	createStorageEvent() {
+		this.setProperty("fromStorage", true);
+		return this;
 	}
 }
 
@@ -58,15 +70,15 @@ var scenarios = [{
 	totalKeys: 4,
 	keyName: "baseKey2",
 	keyIndex: 1,
-	options: { prefix: ""}	//this is the value assigned when no options are specified
+	options: { prefix: "" }	//this is the value assigned when no options are specified
 },
-{
-	name: "basestorage with prefix",
-	totalKeys: 2,
-	keyName: "Key2",
-	keyIndex: 1,
-	options: { prefix: "prefix-"}
-}];
+	{
+		name: "basestorage with prefix",
+		totalKeys: 2,
+		keyName: "Key2",
+		keyIndex: 1,
+		options: { prefix: "prefix-" }
+	}];
 
 scenarios.forEach((scenario) => {
 	describe(scenario.name, () => {
@@ -90,13 +102,10 @@ scenarios.forEach((scenario) => {
 			provide(MockOptions, { useValue: scenario.options })
 		])
 
-		beforeEach(inject([MockStorage, MockStore, NgZone], (s: MockStorage, st: MockStore, nz: MockNgZone) => {
+		beforeEach(inject([MockStorage, MockStore], (s: MockStorage, st: MockStore) => {
 			mockStorage = s;
 			mockStore = st;
-			zone = nz;
 		}));
-
-		let runZone = () => { zone.run(() => { }) };
 
 		it("should load all keys from storage", () => {
 			expect(mockStorage.length).toBe(scenario.totalKeys);
@@ -104,13 +113,13 @@ scenarios.forEach((scenario) => {
 
 		it("can delete a key with delete keyword", () => {
 			delete mockStorage[scenario.keyName];
-			runZone();
+			mockStorage.detectChanges();
 			expect(mockStore[scenario.options.prefix + scenario.keyName]).not.toBeDefined();
 		});
 
 		it("can delete a key with removeItem", () => {
 			mockStorage.removeItem(scenario.keyName);
-			runZone();
+			mockStorage.detectChanges();
 			expect(mockStore[scenario.options.prefix + scenario.keyName]).not.toBeDefined();
 		});
 
@@ -118,8 +127,8 @@ scenarios.forEach((scenario) => {
 			let totalStored = mockStore.length;
 			expect(mockStorage.length).toBe(scenario.totalKeys);
 			mockStorage.clear();
-			runZone();
-			let found = Object.keys(mockStore).some((key)=> key.startsWith(scenario.options.prefix));
+			mockStorage.detectChanges();
+			let found = Object.keys(mockStore).some((key) => key.startsWith(scenario.options.prefix));
 			expect(found).toBe(false);
 			expect(mockStore.length).toBe(totalStored - scenario.totalKeys);
 		});
@@ -127,21 +136,21 @@ scenarios.forEach((scenario) => {
 		it("can create a key", () => {
 			expect(mockStore[scenario.options.prefix + "brandNewKey"]).not.toBeDefined();
 			mockStorage["brandNewKey"] = { valueType: "complex" };
-			runZone();
+			mockStorage.detectChanges();
 			expect(mockStore[scenario.options.prefix + "brandNewKey"]).toBeDefined();
 		});
 
 		it("can create a key with setItem", () => {
 			expect(mockStore[scenario.options.prefix + "brandNewKey"]).not.toBeDefined();
 			mockStorage.setItem("brandNewKey", "simple");
-			runZone();
+			mockStorage.detectChanges();
 			expect(mockStore[scenario.options.prefix + "brandNewKey"]).toBeDefined();
 		});
 
 		it("will pass-thru pre-stringified objects", () => {
 			let value = JSON.stringify({ valueType: "complex" });
 			mockStorage.setItem("brandNewKey", value);
-			runZone();
+			mockStorage.detectChanges();
 			expect(mockStore[scenario.options.prefix + "brandNewKey"]).toBe(value);
 		})
 
@@ -161,9 +170,28 @@ scenarios.forEach((scenario) => {
 
 		it("can update a value", () => {
 			mockStorage[scenario.keyName] = { valueType: "complex" };
-			runZone();
+			mockStorage.detectChanges();
 			expect(mockStore[scenario.options.prefix + scenario.keyName]).toBe(JSON.stringify({ valueType: "complex" }));
 		});
 
+		it("will sync on storage event", () => {
+			expect(mockStorage["otherKey"]).not.toBeDefined();
+			mockStore[scenario.options.prefix + "otherKey"] = '"newValue"';
+			mockStorage
+				.createStorageEvent()
+				.detectChanges();
+			expect(mockStorage["otherKey"]).toBe("newValue");
+		});
+
+		if (scenario.options.prefix) {
+			it("will not sync on storage event without prefix", () => {
+				expect(mockStorage["otherKey"]).not.toBeDefined();
+				mockStore["otherKey"] = '"newValue"';
+				mockStorage
+					.createStorageEvent()
+					.detectChanges();
+				expect(mockStorage["otherKey"]).not.toBeDefined();
+			});
+		}
 	});
 });
