@@ -1,26 +1,31 @@
-# h5webstorage [![Build Status](https://travis-ci.org/SirDarquan/h5webstorage.svg?branch=master)](https://travis-ci.org/SirDarquan/h5webstorage) [![Sauce Test Status](https://saucelabs.com/browser-matrix/SirDarquan.svg)](https://saucelabs.com/u/SirDarquan)
+# h5webstorage [![Build Status](https://travis-ci.org/SirDarquan/h5webstorage.svg?branch=master)](https://travis-ci.org/SirDarquan/h5webstorage) 
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/SirDarquan.svg)](https://saucelabs.com/u/SirDarquan)
 #### Html5 WebStorage API for Angular2
 
 ## Use
 1. Download the library:
-		`npm install h5webstorage --save`	
+
+  `npm install h5webstorage --save`	
 2.  Import the Service and the Provider:
-		```typescript
+
+  ```typescript
 		import {LocalStorage, LOCAL_STORAGE_PROVIDER} from "h5webstorage/api";
-		```
+  ```
 3. Register the provider:
-		```typescript
+
+  ```typescript
 		@Component({
 			...
 			providers:[LOCAL_STORAGE_PROVIDER]	
 		})
-		```
+  ```
 4. Inject the service into you class and use:
-		```typescript
+
+  ```typescript
 		constructor(private localStorage: LocalStorage){
 			...	
 		}
-		```
+  ```
 		
 ## Overview
 The [angular2-localStorage](https://github.com/marcj/angular2-localStorage) 
