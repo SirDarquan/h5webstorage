@@ -1,10 +1,5 @@
 // Karma configuration
 // Generated on Wed Apr 20 2016 11:58:09 GMT-0500 (Central Daylight Time)
-var fs = require("fs");
-var sauceCreds = null;
-if (fs.existsSync("../../sauceCreds.js")) {
-  sauceCreds = require("../../sauceCreds");
-}
 
 module.exports = function (config) {
   config.set({
@@ -18,10 +13,11 @@ module.exports = function (config) {
     frameworks: ['systemjs', 'jasmine'],
 
     plugins: [
-      'karma-chrome-launcher',
       'karma-jasmine',
       'karma-systemjs',
-      'karma-sauce-launcher'
+      'karma-sauce-launcher',
+      'karma-chrome-launcher',
+      'karma-ie-launcher'
     ],
     mime: {
       "text/x-typescript": ['ts']
@@ -34,7 +30,8 @@ module.exports = function (config) {
         'src/*.ts'
       ],
       includeFiles: [
-        'node_modules/angular2/bundles/angular2-polyfills.js'
+        'node_modules/angular2/bundles/angular2-polyfills.js',
+        'node_modules/es6-shim/es6-shim.js'
       ],
       config: {
         defaultJSExtensions: true,
@@ -93,7 +90,7 @@ module.exports = function (config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'IE'],
 
 
     // Continuous Integration mode
@@ -104,77 +101,16 @@ module.exports = function (config) {
     // how many browser should be started simultaneous
     concurrency: 5,
 
-    sauceLabs: {
-      testName: "h5webstorage",
-      startConnect: false,
-      recordVideo: false,
-      recordScreenshots: false,
-      captureTimeout: 60000,
-    },
     browserNoActivityTimeout: 120000,
   });
-
-  var testingLocally = !process.env.TRAVIS;
-  if (testingLocally && sauceCreds) {
-    config.sauceLabs.username = sauceCreds.username;
-    config.sauceLabs.accessKey = sauceCreds.accessKey;
-    config.sauceLabs.startConnect = true;
+  
+  var args = process.argv.slice(2);
+  var usingSauceLabs = process.env.TRAVIS || args.some(function(value){
+    return value.match(/--sauce-creds/i);
+  });
+  
+  if(usingSauceLabs){
+    var sauceLabsConfig = require("./sauceLabs.conf");
+    sauceLabsConfig(config);
   }
-  if (process.env.TRAVIS) {
-    config.sauceLabs.build = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')'
-    config.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
-  }
-  config.customLaunchers = {
-    SL_Chrome_Prime: {
-      base: "SauceLabs",
-      browserName: "chrome",
-      version: "latest",
-      platform: 'Linux'
-    },
-    SL_Chrome_Mezzo: {
-      base: "SauceLabs",
-      browserName: "chrome",
-      version: "latest-1",
-      platform: 'Linux'
-    },
-    SL_Chrome_Omega: {
-      base: "SauceLabs",
-      browserName: "chrome",
-      version: "latest-2",
-      platform: 'Windows 10'
-    },
-    SL_Firefox_Prime: {
-      base: "SauceLabs",
-      browserName: "firefox",
-      version: "latest",
-      platform: 'Windows 10'
-    },
-    SL_Firefox_Mezzo: {
-      base: "SauceLabs",
-      browserName: "firefox",
-      version: "latest-1",
-      platform: 'Windows 10'
-    },
-    SL_Firefox_Omega: {
-      base: "SauceLabs",
-      browserName: "firefox",
-      version: "latest-2",
-      platform: 'Windows 10'
-    },
-    // SL_IE: {
-    //   base: "SauceLabs",
-    //   browserName: "internet explorer",
-    //   version: "latest",
-    //   platform: 'Windows 8.1'
-    // },
-    SL_Edge: {
-      base: "SauceLabs",
-      browserName: "microsoftedge",
-      version: "latest",
-      platform: 'Windows 10'
-    }
-  };
-  config.browsers = Object.keys(config.customLaunchers);
-  config.reporters.push("saucelabs");
-
 }
