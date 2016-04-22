@@ -1,7 +1,8 @@
 // Karma configuration
 // Generated on Wed Apr 20 2016 11:58:09 GMT-0500 (Central Daylight Time)
+var sauceCreds = require("../../sauceCreds");
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -10,35 +11,35 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['systemjs','jasmine'],
-    
-    plugins:[
+    frameworks: ['systemjs', 'jasmine'],
+
+    plugins: [
       'karma-chrome-launcher',
       'karma-jasmine',
-      'karma-systemjs'
+      'karma-systemjs',
+      'karma-sauce-launcher'
     ],
-    mime:{
-      "text/x-typescript":['ts']
+    mime: {
+      "text/x-typescript": ['ts']
     },
-    
-    systemjs:{
-      serveFiles:[
+
+    systemjs: {
+      serveFiles: [
         'node_modules/**/*.js',
         'dist/src/*.js',
-        'dist/src/*js.map',
         'src/*.ts'
       ],
-      includeFiles:[
+      includeFiles: [
         'node_modules/angular2/bundles/angular2-polyfills.js'
       ],
-      config:{
+      config: {
         defaultJSExtensions: true,
-        paths:{
+        paths: {
           systemjs: "node_modules/systemjs/dist/system.js",
           'system-polyfills': "node_modules/systemjs/dist/system-polyfills.js",
         },
         transpiler: null,
-        map:{
+        map: {
           "angular2": "node_modules/angular2",
           "rxjs": "node_modules/rxjs",
         }
@@ -47,7 +48,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      {pattern: 'dist/src/*.spec.js', included: true},
+      { pattern: 'dist/src/*.spec.js', included: true },
     ],
 
 
@@ -97,62 +98,79 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity,
-    
-    sauceLabs:{
+    concurrency: 5,
+
+    sauceLabs: {
       testName: "h5webstorage",
       startConnect: false,
       recordVideo: false,
       recordScreenshots: false,
-    }
-    
+      captureTimeout: 60000,
+    },
+    browserNoActivityTimeout: 120000,
   });
-  
-  if(process.env.TRAVIS){
+
+  var testingLocally = !process.env.TRAVIS;
+  if (testingLocally && sauceCreds) {
+    config.sauceLabs.username = sauceCreds.username;
+    config.sauceLabs.accessKey = sauceCreds.accessKey;
+    config.sauceLabs.startConnect = true;
+  }
+  if (process.env.TRAVIS) {
     config.sauceLabs.build = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')'
     config.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
-    config.sauceLabs.customLaunchers = {
-      SL_Chrome_Prime:{
-        base: "SauceLabs",
-        browserName: "chrome",
-        version:"latest"
-      },
-      SL_Chrome_Mezzo:{
-        base: "SauceLabs",
-        browserName: "chrome",
-        version:"latest-1"
-      },
-      SL_Chrome_Omega:{
-        base: "SauceLabs",
-        browserName: "chrome",
-        version:"latest-2"
-      },
-      SL_Firefox_Prime:{
-        base: "SauceLabs",
-        browserName: "firefox",
-        version:"latest"
-      },
-      SL_Firefox_Mezzo:{
-        base: "SauceLabs",
-        browserName: "firefox",
-        version:"latest-1"
-      },
-      SL_Firefox_Omega:{
-        base: "SauceLabs",
-        browserName: "firefox",
-        version:"latest-2"
-      },
-      SL_IE:{
-        base: "SauceLabs",
-        browserName: "internet explorer",
-        version:"latest"
-      },
-      SL_Edge:{
-        base: "SauceLabs",
-        browserName: "microsoftedge",
-        version:"latest"
-      }
-    };
-    config.sauceLabs.browsers = Object.keys(config.sauceLabs.customLaunchers);
   }
+  config.customLaunchers = {
+    SL_Chrome_Prime: {
+      base: "SauceLabs",
+      browserName: "chrome",
+      version: "latest",
+      platform: 'Linux'
+    },
+    SL_Chrome_Mezzo: {
+      base: "SauceLabs",
+      browserName: "chrome",
+      version: "latest-1",
+      platform: 'Linux'
+    },
+    SL_Chrome_Omega: {
+      base: "SauceLabs",
+      browserName: "chrome",
+      version: "latest-2",
+      platform: 'Windows 10'
+    },
+    SL_Firefox_Prime: {
+      base: "SauceLabs",
+      browserName: "firefox",
+      version: "latest",
+      platform: 'Windows 10'
+    },
+    SL_Firefox_Mezzo: {
+      base: "SauceLabs",
+      browserName: "firefox",
+      version: "latest-1",
+      platform: 'Windows 10'
+    },
+    SL_Firefox_Omega: {
+      base: "SauceLabs",
+      browserName: "firefox",
+      version: "latest-2",
+      platform: 'Windows 10'
+    },
+    SL_IE: {
+      base: "SauceLabs",
+      browserName: "internet explorer",
+      version: "latest",
+      platform: 'Windows 8.1'
+    },
+    SL_Edge: {
+      base: "SauceLabs",
+      browserName: "microsoftedge",
+      version: "latest",
+      platform: 'Windows 10'
+    }
+  };
+  config.browsers = Object.keys(config.customLaunchers);
+  config.reporters.push("saucelabs");
+
 }
