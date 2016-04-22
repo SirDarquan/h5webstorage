@@ -1,8 +1,8 @@
 // Karma configuration
 // Generated on Wed Apr 20 2016 11:58:09 GMT-0500 (Central Daylight Time)
 var fs = require("fs");
-var sauceCreds;
-if (fs.existSync("../../sauceCreds.js")) {
+var sauceCreds = null;
+if (fs.existsSync("../../sauceCreds.js")) {
   sauceCreds = require("../../sauceCreds");
 }
 
