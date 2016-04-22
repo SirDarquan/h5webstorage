@@ -14,26 +14,19 @@ export abstract class BaseStorage implements OnDestroy, Storage {
     constructor(ngZone: NgZone, storage: Storage, options?: StorageOptions) {
 		options = Object.assign({}, { prefix: "" }, options);
 		this.setProperty("options", options);
+		this.setProperty("storage", storage);
 
-		Object.keys(storage).forEach((key)=>{
-			if (!key.startsWith(options.prefix)) {
-				return;
-			}
-			var _key = this.normalizeStorageKey(key, KeyDirection.From);
-			try {
-				this[_key] = JSON.parse(storage[key]);
-			}
-			catch (e) {
-				this[_key] = null;
-			}
+		this.UpdateFromStorage();
+
+        var subscription = ngZone.onMicrotaskEmpty.subscribe(() => {
+			let fromStorage: boolean = this.getProperty<boolean>("fromStorage");
+			fromStorage ? this.UpdateFromStorage() : this.WriteToStorage();
 		});
-        var subscription = ngZone.onMicrotaskEmpty.subscribe(() => this.WriteToStorage());
-		var listener = (event) => this.UpdateFromStorage(event);
+		
+		var listener = (event) => this.setProperty("fromStorage", true);
 		window.addEventListener("storage", listener);
 
-		this.setProperty("prevValue", JSON.stringify(this));
 		this.setProperty("subscription", subscription);
-		this.setProperty("storage", storage);
 		this.setProperty("listener", listener);
     }
 
@@ -65,14 +58,30 @@ export abstract class BaseStorage implements OnDestroy, Storage {
 		}
 	}
 
-	private UpdateFromStorage(event: StorageEvent) {
+	private UpdateFromStorage() {
 		var options = this.getProperty<StorageOptions>("options");
-		if (!event.key || !event.key.startsWith(options.prefix)) {
-			return;
+		var storage = this.getProperty<Storage>("storage");
+		let tmp = Object.assign({}, this);
+		Object.keys(storage).forEach((key) => {
+			if (!key.startsWith(options.prefix)) {
+				return;
+			}
+			var _key = this.normalizeStorageKey(key, KeyDirection.From);
+			try {
+				delete tmp[_key];
+				this[_key] = JSON.parse(storage[key]);
+			}
+			catch (e) {
+				this[_key] = null;
+			}
+
+		});
+		for (var key in tmp) {
+			delete this[this.normalizeStorageKey(key, KeyDirection.From)];
 		}
-		var _key = this.normalizeStorageKey(event.key, KeyDirection.From);
-		event.newValue ? this[_key] = JSON.parse(event.newValue) : delete this[_key];
+
 		this.setProperty("prevValue", JSON.stringify(this));
+		this.setProperty("fromStorage", false);
 	}
 
     ngOnDestroy() {
@@ -97,12 +106,12 @@ export abstract class BaseStorage implements OnDestroy, Storage {
 	}
 
 	setItem(key: string, value: string) {
-		try{
+		try {
 			//since the value of set item has to be a string, the value may already be stringified Json.
 			//so we parse it to allow the WriteToStorage function to properly stringify object values.
 			this[key] = JSON.parse(value);
 		}
-		catch(e){
+		catch (e) {
 			this[key] = value;
 		}
 	}
