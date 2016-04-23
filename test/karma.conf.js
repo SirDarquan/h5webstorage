@@ -27,6 +27,7 @@ module.exports = function (config) {
       serveFiles: [
         'node_modules/**/*.js',
         'dist/src/*.js',
+        'dist/test/*.js',
         'src/*.ts'
       ],
       includeFiles: [
