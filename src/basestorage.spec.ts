@@ -130,5 +130,17 @@ scenarios.forEach((scenario) => {
 				expect(mockStorage["otherKey"]).not.toBeDefined();
 			});
 		}
+		
+		it("will return undefined for an unknow key",()=>{
+			expect(mockStorage["otherKey"]).not.toBeDefined();			
+		});
+		
+		it("will return null for improperly encoded values", ()=>{
+			mockStore[scenario.options.prefix + "badValue"] = "this is not a JSON string";
+			mockStorage
+				.createStorageEvent()
+				.detectChanges();
+			expect(mockStorage["badValue"]).toBeNull();
+		});
 	});
 });
