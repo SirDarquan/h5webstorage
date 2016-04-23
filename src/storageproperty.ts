@@ -10,7 +10,7 @@ export function StorageProperty(storageKey?: string, storage: "Local" | "Session
 		/*in the current context, 'this' is the module containing the StorageProperty but what we
 		 * actually want is the object with the proerty we're defining. So we create this function
 		 * to be bound with the correct 'this' so we can have access to its properies. Of which,
-		 * one should be an instance of LocalStorage
+		 * one should be an instance of LocalStorage or SessionStorage
 		 */
 		var findStore = function(obj: any) {
 			if (!storeObject) {
@@ -19,7 +19,7 @@ export function StorageProperty(storageKey?: string, storage: "Local" | "Session
 				});
 				storeKey && (storeObject = obj[storeKey]);
 				if(!storeObject){
-					throw new Error("Object must have a storage property.")
+					throw new Error("Object must have a property that is an instance of "+ storage +"Storage.")
 				}
 			}
 			return storeObject;
