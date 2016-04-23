@@ -27,8 +27,12 @@ module.exports = function (config) {
       serveFiles: [
         'node_modules/**/*.js',
         'dist/src/*.js',
+        'dist/src/*.map',
+        'src/*.ts',
         'dist/test/*.js',
-        'src/*.ts'
+        'dist/test/*.map',
+        'test/*.ts',
+
       ],
       includeFiles: [
         'node_modules/angular2/bundles/angular2-polyfills.js',
