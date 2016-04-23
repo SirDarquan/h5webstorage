@@ -60,9 +60,10 @@ export class MockStorage extends BaseStorage {
 }
 
 export class MockObject{
-	private TestProperty;	
+	public TestProperty;
+	public SessionKey;	
 	
-	constructor(){
+	constructor(private storage: Storage){
 		
 	}
 }
