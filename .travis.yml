@@ -3,7 +3,5 @@ node_js:
   - "4"
 addons:
   sauce_connect: true
-  code_climate:
-    repo_token: 9f943d970de70dc2222711999df81b199992b0bc28e3247b0a24c6e94dfd79d4    
 after_script:
   - codeclimate-test-reporter < dist/coverage/lcov.info

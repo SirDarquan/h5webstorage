@@ -23,6 +23,7 @@
     "zone.js": "^0.6.10"
   },
   "devDependencies": {
+    "codeclimate-test-reporter": "^0.3.1",
     "concurrently": "^2.0.0",
     "guid": "0.0.12",
     "jasmine-core": "^2.4.1",
