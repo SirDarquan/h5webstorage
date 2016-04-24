@@ -96,7 +96,7 @@ todo-heading div{
 }
 todo-app{
 	display: flex;
-	widows: 100%;
+	width: 100%;
 }
 todo-app > div{
 	width: 667px;
