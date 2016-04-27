@@ -1,11 +1,11 @@
-# h5webstorage [![Build Status](https://travis-ci.org/SirDarquan/h5webstorage.svg?branch=master)](https://travis-ci.org/SirDarquan/h5webstorage) 
+# h5webstorage [![Build Status][]][bsl] [![Test Coverage][]][tcl] [![Code Climate][]][ccl] 
 #### Html5 WebStorage API for Angular2
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/SirDarquan.svg)](https://saucelabs.com/u/SirDarquan)
 - [Use](#use)
 - [Overview](#overview)
   - [LocalStorage](#localstorage) (service)
   - [SessionStorage](#sessionstorage) (service)
-  - [@StorageProperty](#@storageproperty) (decorator)
+  - [@StorageProperty](#storageproperty) (decorator)
   - [ConfigureStorage](#configurestorage) (function)
   
 ## Use
@@ -124,3 +124,9 @@ used to serialize and deseralize the data from storage.
 [angular2-localStorage]: https://github.com/marcj/angular2-localStorage
 [localStorage]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
 [sessionStorage]: https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
+[Test Coverage]: https://codeclimate.com/github/SirDarquan/h5webstorage/badges/coverage.svg
+[tcl]: https://codeclimate.com/github/SirDarquan/h5webstorage/coverage
+[Build Status]: https://travis-ci.org/SirDarquan/h5webstorage.svg?branch=master
+[bsl]: https://travis-ci.org/SirDarquan/h5webstorage
+[Code Climate]: https://codeclimate.com/github/SirDarquan/h5webstorage/badges/gpa.svg
+[ccl]: https://codeclimate.com/github/SirDarquan/h5webstorage
