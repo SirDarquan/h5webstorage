@@ -15,14 +15,14 @@
 2.  Import the Service and the Provider:
 
   ```typescript
-		import {LocalStorage, LOCAL_STORAGE_PROVIDER} from "h5webstorage/api";
+		import {LocalStorage, WEB_STORAGE_PROVIDERS} from "h5webstorage/api";
   ```
 3. Register the provider:
 
   ```typescript
 		@Component({
 			...
-			providers:[LOCAL_STORAGE_PROVIDER]	
+			providers:[WEB_STORAGE_PROVIDERS]	
 		})
   ```
 4. Inject the service into you class and use:

@@ -3,7 +3,7 @@ import {NgModel, NgClass} from "angular2/common";
 import {TodoList} from "./todoList";
 import {TodoItemModel} from "./todoItem";
 import {TodoHeading} from "./todoHeading";
-import {LocalStorage, LOCAL_STORAGE_PROVIDER, StorageProperty} from "../../src/api";
+import {LocalStorage, WEB_STORAGE_PROVIDERS, StorageProperty} from "../../src/api";
 import {JsonPipe} from "./JsonPipe";
 
 @Component({
@@ -18,7 +18,7 @@ import {JsonPipe} from "./JsonPipe";
 	</pre>`,
 	directives: [TodoList, NgModel, TodoHeading],
 	pipes:[JsonPipe],
-	providers: [LOCAL_STORAGE_PROVIDER] //this is a shortcut to register all the needed parts to make LocalStorage service work properly
+	providers: [WEB_STORAGE_PROVIDERS] //this is a shortcut to register all the needed parts to make LocalStorage service work properly
 })
 export class TodoApp {
 	//setup a default value. If a value is already defined, it will not be overwritten
