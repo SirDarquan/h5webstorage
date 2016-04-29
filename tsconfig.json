@@ -12,6 +12,7 @@
 		"node_modules",
 		"angular2-localStorage",
 		"typings/main",
-		"typings/main.d.ts"
+		"typings/main.d.ts",
+		"dist"
 	]
 }
