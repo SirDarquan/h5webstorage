@@ -141,6 +141,12 @@ storageType.forEach((type) => {
 			decorator(mockObject, "TestProperty")
 			expect(()=> mockObject.TestProperty).toThrowError("Object must have a property that is an instance of " + prefix + "Storage.");
 		})
+		
+		it("will create a readonly property", ()=>{
+			let decorator = StorageProperty({readOnly: true});
+			decorator(mockObject, "TestProperty");
+			expect(()=>mockObject.TestProperty = "disallowed action").toThrow();
+		});
 
 	});
 })

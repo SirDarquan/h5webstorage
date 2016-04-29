@@ -1,49 +1,63 @@
 import {LocalStorage} from "./localstorage";
 import {SessionStorage} from "./sessionstorage";
 
-export function StorageProperty(storageKey?: string, storage: "Local" | "Session" = "Local") {
+export function StorageProperty(options: { storageKey?: string, storage?: "Local" | "Session", readOnly?: boolean });
+export function StorageProperty(storageKey?: string, storage?: "Local" | "Session");
+export function StorageProperty(...params: any[]) {
 	return (target: Object, decoratedPropertyName: string): void => {
-		storageKey = storageKey || decoratedPropertyName;
+		let options: { storageKey: string, storage: "Local" | "Session", readOnly: boolean };
+		if (params[0] && typeof params[0] == "object") {
+			options = Object.assign({}, { storageKey: decoratedPropertyName, storage: "Local", readOnly: false }, params[0]);
+		}
+		else {
+			options = Object.assign({}, { storageKey: params[0] || decoratedPropertyName, storage: params[1] || "Local", readOnly: false });
+		}
 		let storeObject: LocalStorage = null;
-		let initializing: boolean = true;
+		let initializing: boolean = !options.readOnly;
 
 		/*in the current context, 'this' is the module containing the StorageProperty but what we
 		 * actually want is the object with the proerty we're defining. So we create this function
 		 * to be bound with the correct 'this' so we can have access to its properies. Of which,
 		 * one should be an instance of LocalStorage or SessionStorage
 		 */
-		var findStore = function(obj: any) {
+		var findStore = function (obj: any) {
 			if (!storeObject) {
-				let storeKey = Object.keys(obj).find(function(key){
-					return storage == "Local" ? obj[key] instanceof LocalStorage : obj[key] instanceof SessionStorage;
+				let storeKey = Object.keys(obj).find(function (key) {
+					return options.storage == "Local" ? obj[key] instanceof LocalStorage : obj[key] instanceof SessionStorage;
 				});
 				storeKey && (storeObject = obj[storeKey]);
-				if(!storeObject){
-					throw new Error("Object must have a property that is an instance of "+ storage +"Storage.")
+				if (!storeObject) {
+					throw new Error("Object must have a property that is an instance of " + options.storage + "Storage.")
 				}
 			}
 			return storeObject;
 		}
 
-		Object.defineProperty(target, decoratedPropertyName, {
-			get: function() {
+		var propertyObj = {
+			get: function () {
 				initializing = false;
 				findStore(this);
-				return storeObject.getItem(storageKey);
+				return storeObject.getItem(options.storageKey);
 			},
-			set: function(value){
+			enumerable: false
+		}
+
+		//if requesting a readOnly property don't create the set
+		if (!options.readOnly) {
+			propertyObj["set"] = function (value) {
 				if (initializing) {
 					initializing = false;
 					findStore(this);
-					let storedValue = storeObject.getItem(storageKey);
+					let storedValue = storeObject.getItem(options.storageKey);
 					if (typeof storedValue != "undefined") {
 						return;
 					}
 				}
-				storeObject.setItem(storageKey, value);
-			},
-			enumerable: false
-		});
+				storeObject.setItem(options.storageKey, value);
+			}
+		}
+
+		Object.defineProperty(target, decoratedPropertyName, propertyObj);
 
 	};
 }
