@@ -1,7 +1,19 @@
 import {LocalStorage} from "./localstorage";
 import {SessionStorage} from "./sessionstorage";
 
+/**
+ * Associates a property with a key in storage
+ * @param options - An object containing properties to determine how the property behaves
+ * - storageKey {string} [optional]: The name of the key in storage to use. If not supplied or null, the name of the property is used
+ * - storage ("Local" | "Session"): Chooses the type of storage to use (default: "Local")
+ * - readOnly {boolean}: determines if the property is read/write or readOnly (default: read/write)
+ */
 export function StorageProperty(options: { storageKey?: string, storage?: "Local" | "Session", readOnly?: boolean });
+/**
+ * Associates a property with a key in storage
+ * @param storageKey: The name of the key in storage to use. If not supplied or null, the name of the property is used
+ * @param storage: Chooses the type of storage to use (default: "Local")
+ */
 export function StorageProperty(storageKey?: string, storage?: "Local" | "Session");
 export function StorageProperty(...params: any[]) {
 	return (target: Object, decoratedPropertyName: string): void => {

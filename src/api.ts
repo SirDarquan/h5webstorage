@@ -21,12 +21,26 @@ function CreateStorageProvider<T extends Type, Storage>(customStorage?: T, stora
 }
 
 export {LocalStorage, SessionStorage};
-/** @deprecated - use {@link WEB_STORAGE_PROVIDERS } instead */
+/** 
+ * The provider necessary to use the LocalStorage service
+ * @deprecated - use {@link WEB_STORAGE_PROVIDERS } instead 
+ * 
+ */
 export let LOCAL_STORAGE_PROVIDER = CreateStorageProvider(LocalStorage, StorageType.Local);
-/** @deprecated - use {@link WEB_STORAGE_PROVIDERS } instead */
+/** 
+ * The provider necessary to use the SessionStorage service
+ * @deprecated - use {@link WEB_STORAGE_PROVIDERS } instead 
+ */
 export let SESSION_STROAGE_PROVIDER = CreateStorageProvider(SessionStorage, StorageType.Session);
+/**
+ * The providers necessary to use the LocalStorage and SessionStorage services
+ */
 export let WEB_STORAGE_PROVIDERS = [].concat(LOCAL_STORAGE_PROVIDER).concat(SESSION_STROAGE_PROVIDER);
 export {StorageProperty} from "./storageproperty";
+/**
+ * Creates a provider for the StorageOptions
+ * @param options - A {@link StorageOptions} object
+ */
 export function ConfigureStorage(options: StorageOptions) {	
 	return provide(STORAGE_OPTIONS, { useValue: options });
 }
