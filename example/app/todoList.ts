@@ -7,7 +7,7 @@ import {CreateItem} from "./createItem";
 @Component({
 	selector: "todo-list",
 	template: `
-	<todo-item template="ngFor #item of todoItems; trackBy:tracker" [data]="item" (changed)="updateData($event)" (removed)="deleteData($event)"></todo-item>
+	<todo-item template="ngFor let item of todoItems; trackBy:tracker" [data]="item" (changed)="updateData($event)" (removed)="deleteData($event)"></todo-item>
 	<add-item (created)="addItem($event)"></add-item>
 	`,
 	directives: [NgFor, TodoItem, CreateItem]

@@ -1,6 +1,6 @@
 {
   "name": "h5webstorage",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "HTML5 WebStorage API for Angular2",
   "repository": {
     "type": "git",

@@ -11,5 +11,5 @@ import {Injectable, PipeTransform, WrappedValue, Pipe} from 'angular2/core';
 @Pipe({name: 'json', pure: false})
 @Injectable()
 export class JsonPipe implements PipeTransform {
-  transform(value: any, args: any[] = null): string { args.unshift(value); return Json.stringify.call(this, args); }
+  transform(value: any, args: any[] = []): string { args.unshift(value); return Json.stringify.call(this, args); }
 }

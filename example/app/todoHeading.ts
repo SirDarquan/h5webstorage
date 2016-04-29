@@ -10,7 +10,7 @@ import {LocalStorage, ConfigureStorage} from "../../src/api";
 		<select [(ngModel)]="settings.list" *ngIf="!isEditing">
 			<option value="">New List</option>
 			<optgroup label="Your lists">
-			<option template="ngFor #list of lists" [value]="list">{{list}}</option>
+			<option template="ngFor let list of lists" [value]="list">{{list}}</option>
 			</optgroup>
 		</select>
 		<span *ngIf="isEditing"><input #listName type="text"><button (click)="createList(listName.value)">Add</button><button (click)="isEditing=false">Cancel</button></span>
