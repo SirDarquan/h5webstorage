@@ -142,5 +142,10 @@ scenarios.forEach((scenario) => {
 				.detectChanges();
 			expect(mockStorage["badValue"]).toBeNull();
 		});
+		
+		it("will return 'undefined' when index is out of range", ()=>{
+			expect(mockStorage.key(-1)).not.toBeDefined();
+			expect(mockStorage.key(10)).not.toBeDefined();
+		});
 	});
 });
