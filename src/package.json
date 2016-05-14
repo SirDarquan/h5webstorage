@@ -1,6 +1,6 @@
 {
   "name": "h5webstorage",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "description": "HTML5 WebStorage API for Angular2",
   "repository": {
     "type": "git",
@@ -21,6 +21,6 @@
   "dependencies": {
   },
   "peerDependencies": {
-    "angular2": "^2.0.0-rc.1"
+    "@angular/core": "^2.0.0-rc.1"
   }
 }

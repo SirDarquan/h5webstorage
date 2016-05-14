@@ -15,7 +15,7 @@
 2.  Import the Service and the Provider:
 
   ```typescript
-		import {LocalStorage, WEB_STORAGE_PROVIDERS} from "h5webstorage/api";
+		import {LocalStorage, WEB_STORAGE_PROVIDERS} from "h5webstorage";
   ```
 3. Register the provider:
 
@@ -98,7 +98,7 @@ component contains the `ConfigureStorage` provider, then all sub-components
 that inject `LocalStorage`/`SessionStorage` will have the options configured.
 Here's an example of `ConfigureStorage` being used:
 ```typescript
-import {ConfigureStorage} from "h5webstorage/api";
+import {ConfigureStorage} from "h5webstorage";
 @Component({
 	providers:[ConfigureStorage({ prefix: "myPrefix-" })]	
 })
