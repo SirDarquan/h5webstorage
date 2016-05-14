@@ -1,6 +1,6 @@
-import {Component, Output, EventEmitter, ViewChildren, QueryList, AfterViewInit, Input} from "angular2/core";
-import {NgFor, NgModel, NgIf} from "angular2/common";
-import {LocalStorage, ConfigureStorage} from "../../src/api";
+import {Component, Output, EventEmitter, ViewChildren, QueryList, AfterViewInit, Input} from "@angular/core";
+import {NgFor, NgModel, NgIf} from "@angular/common";
+import {LocalStorage, ConfigureStorage} from "../../src/index";
 
 @Component({
 	selector: "todo-heading",
@@ -21,7 +21,7 @@ import {LocalStorage, ConfigureStorage} from "../../src/api";
 	 * We take advantage of the injector hirearchy and create a new LocalStorage service but this one will be configured
 	 * to deal only with keys with the specified prefix. All todo lists will begin with a '/'
 	 */
-	providers: [ConfigureStorage({ prefix: "/" })],
+	providers: [LocalStorage, ConfigureStorage({ prefix: "/" })],
 	directives: [NgFor, NgModel, NgIf]
 })
 export class TodoHeading implements AfterViewInit {

@@ -1,5 +1,5 @@
-import {Component, Input, Output, EventEmitter, ViewChild, AfterViewInit, HostBinding} from "angular2/core";
-import {NgModel, NgIf} from "angular2/common";
+import {Component, Input, Output, EventEmitter, ViewChild, AfterViewInit, HostBinding} from "@angular/core";
+import {NgModel, NgIf} from "@angular/common";
 
 @Component({
 	selector: "todo-item",

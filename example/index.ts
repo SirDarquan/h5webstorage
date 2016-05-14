@@ -1,5 +1,5 @@
-import {bootstrap} from "angular2/platform/browser";
-import {TodoApp} from "./app/app";
-import {ROUTER_PROVIDERS} from "angular2/router";
+import {bootstrap} from "@angular/platform-browser-dynamic";
+import {TodoApp} from "./app/index";
+import {ROUTER_PROVIDERS} from "@angular/router-deprecated";
 
 bootstrap(TodoApp, [ROUTER_PROVIDERS]);

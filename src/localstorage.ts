@@ -1,4 +1,4 @@
-import {Inject, Injectable, Optional, OpaqueToken, NgZone} from "angular2/core";
+import {Inject, Injectable, Optional, OpaqueToken, NgZone} from "@angular/core";
 import {BaseStorage, StorageOptions, STORAGE_OPTIONS} from "./basestorage";
 
 export let LOCAL_STORAGE_OBJECT = new OpaqueToken("localstorage");

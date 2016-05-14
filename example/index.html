@@ -8,29 +8,14 @@
 		<!-- IE required polyfills, in this exact order -->
 		<script src="../node_modules/guid/guid.js"></script>
 		<script src="../node_modules/es6-shim/es6-shim.min.js"></script>
-		<script src="../node_modules/systemjs/dist/system-polyfills.js"></script>
-		<script src="../node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>   
 
-		<script src="../node_modules/angular2/bundles/angular2-polyfills.js"></script>
+		<script src="../node_modules/zone.js/dist/zone.js"></script>
+		<script src="../node_modules/reflect-metadata/Reflect.js"></script>
 		<script src="../node_modules/systemjs/dist/system.src.js"></script>
-		<script src="../node_modules/rxjs/bundles/Rx.js"></script>
-		<script src="../node_modules/angular2/bundles/angular2.dev.js"></script>
 		<!-- 2. Configure SystemJS -->
+		<script src="system.config.js"></script>
 		<script>
-		System.config({
-			defaultJSExtensions: true,
-			map:{
-				"angular2": "../node_modules/angular2",
-				"rxjs": "../node_modules/rxjs"
-			},
-			packages:{
-				"example":{
-					defaultExtension: "js",
-					main: "../../dist/example/index"
-				}
-			}
-		});
-		System.import('example')
+			System.import('example')
 				.then(null, console.error.bind(console));
 		</script>
 	</head>

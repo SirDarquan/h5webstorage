@@ -1,4 +1,4 @@
-import {Injectable, NgZone} from "angular2/core";
+import {Injectable, NgZone} from "@angular/core";
 import {BaseStorage, StorageOptions} from "../src/basestorage";
 
 export class MockStore implements Storage {

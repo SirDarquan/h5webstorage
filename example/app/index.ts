@@ -1,9 +1,9 @@
-import {Component, ViewChild, AfterViewInit, HostBinding} from "angular2/core";
-import {NgModel, NgClass} from "angular2/common";
+import {Component, ViewChild, AfterViewInit, HostBinding} from "@angular/core";
+import { NgModel, NgClass} from "@angular/common";
 import {TodoList} from "./todoList";
 import {TodoItemModel} from "./todoItem";
 import {TodoHeading} from "./todoHeading";
-import {LocalStorage, WEB_STORAGE_PROVIDERS, StorageProperty} from "../../src/api";
+import {LocalStorage, WEB_STORAGE_PROVIDERS, StorageProperty} from "../../src/index";
 import {JsonPipe} from "./JsonPipe";
 
 @Component({

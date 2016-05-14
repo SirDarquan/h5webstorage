@@ -15,7 +15,10 @@
   "author": "SirDarquan <https://github.com/SirDarquan>",
   "license": "ISC",
   "dependencies": {
-    "angular2": "^2.0.0-beta.17",
+    "@angular/compiler": "^2.0.0-rc.1",
+    "@angular/platform-browser": "^2.0.0-rc.1",
+    "@angular/platform-browser-dynamic": "^2.0.0-rc.1",
+    "@angular/router-deprecated": "^2.0.0-rc.1",
     "es6-shim": "^0.35.0",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.6",

@@ -1,5 +1,5 @@
-import {provide, NgZone} from "angular2/core";
-import {inject, beforeEach, beforeEachProviders} from "angular2/testing";
+import {provide, NgZone} from "@angular/core";
+import {inject, beforeEach, beforeEachProviders} from "@angular/core/testing";
 import {MockObject, MockStorage, MockStore, MockOptions} from "../test/mocks";
 import {LocalStorage, LOCAL_STORAGE_OBJECT} from "./localstorage";
 import {SessionStorage, SESSION_STORAGE_OBJECT} from "./sessionstorage";

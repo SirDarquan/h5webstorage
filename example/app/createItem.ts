@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Output} from "angular2/core";
-import {NgModel} from "angular2/common";
+import {Component, EventEmitter, Output} from "@angular/core";
+import {NgModel} from "@angular/common";
 import {TodoItemModel} from "./todoItem";
 
 @Component({

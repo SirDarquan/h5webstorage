@@ -1,4 +1,4 @@
-import {EventEmitter, NgZone, OnDestroy, OpaqueToken} from "angular2/core";
+import {EventEmitter, NgZone, OnDestroy, OpaqueToken} from "@angular/core";
 /**
  * The token used to allow injection of the {@link StorageOptions} interface. For more information visit the {@link https://angular.io/docs/ts/latest/guide/dependency-injection.html#interface angular2 docs}.
  */
