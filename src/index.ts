@@ -1,4 +1,4 @@
-import {OpaqueToken, provide, Type} from 'angular2/core';
+import {OpaqueToken, provide, Type} from '@angular/core';
 import {StorageOptions, STORAGE_OPTIONS} from "./basestorage";
 import {LocalStorage, LOCAL_STORAGE_OBJECT} from "./localstorage";
 import {SessionStorage, SESSION_STORAGE_OBJECT} from "./sessionstorage";
