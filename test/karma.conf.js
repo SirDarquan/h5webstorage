@@ -36,8 +36,9 @@ module.exports = function (config) {
 
       ],
       includeFiles: [
-        'node_modules/angular2/bundles/angular2-polyfills.js',
-        'node_modules/es6-shim/es6-shim.js'
+        'node_modules/es6-shim/es6-shim.js',
+        'node_modules/zone.js/dist/zone.js',
+        'node_modules/reflect-metadata/Reflect.js'
       ],
       config: {
         defaultJSExtensions: true,
@@ -47,8 +48,11 @@ module.exports = function (config) {
         },
         transpiler: null,
         map: {
-          "angular2": "node_modules/angular2",
+          "@angular": "node_modules/@angular",
           "rxjs": "node_modules/rxjs",
+        },
+        packages:{
+          "@angular/core":{main:"index.js", defaultExtension: "js"}
         }
       }
     },
