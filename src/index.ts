@@ -1,4 +1,4 @@
-import {OpaqueToken, provide, Type} from '@angular/core';
+import {OpaqueToken, provide, Type, Provider} from '@angular/core';
 import {StorageOptions, STORAGE_OPTIONS} from "./basestorage";
 import {LocalStorage, LOCAL_STORAGE_OBJECT} from "./localstorage";
 import {SessionStorage, SESSION_STORAGE_OBJECT} from "./sessionstorage";
@@ -11,7 +11,7 @@ enum StorageType {
 /**
  * The objects necessary to use Web Storage in the browser
  */
-export let BROWSER_STORAGE_PROVIDERS = [
+export let BROWSER_STORAGE_PROVIDERS:any[] = [
 	provide(LOCAL_STORAGE_OBJECT, {useValue: localStorage}),
 	provide(SESSION_STORAGE_OBJECT, {useValue: sessionStorage})
 ];
@@ -49,7 +49,7 @@ export {StorageProperty} from "./storageproperty";
  * Creates a provider for the StorageOptions
  * @param options - A {@link StorageOptions} object
  */
-export function ConfigureStorage(options: StorageOptions) {	
+export function ConfigureStorage(options: StorageOptions): Provider {	
 	return provide(STORAGE_OPTIONS, { useValue: options });
 }
 
