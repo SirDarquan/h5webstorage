@@ -8,6 +8,14 @@ enum StorageType {
 	Session
 }
 
+/**
+ * The objects necessary to use Web Storage in the browser
+ */
+export let BROWSER_STORAGE_PROVIDERS = [
+	provide(LOCAL_STORAGE_OBJECT, {useValue: localStorage}),
+	provide(SESSION_STORAGE_OBJECT, {useValue: sessionStorage})
+];
+
 function CreateStorageProvider<T extends Type, Storage>(customStorage?: T, storageType?: StorageType) {
 	if ((typeof storageType != "undefined" || customStorage) && !(customStorage && typeof storageType != "undefined")) {
 		throw new Error("Both customStorage and storageType must be defined");
