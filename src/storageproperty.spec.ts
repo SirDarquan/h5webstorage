@@ -65,6 +65,7 @@ storageType.forEach((type) => {
 		it("should retrieve value from " + type + "Storage", () => {
 			let decorator = StorageProperty(null, type == "local" ? "Local" : "Session");
 			decorator(mockObject, "TestProperty");
+
 			let actual = transformer.parse(mockStore["TestProperty"]);
 			expect(mockObject.TestProperty).toBe(actual);
 		});
@@ -82,37 +83,23 @@ storageType.forEach((type) => {
 		});
 
 		it("should set default value in " + type + "Storage", () => {
-			/* 
-			 * In an angular 2 application, a detorator with a value goes through the following steps:
-			 * 	1. Retrieve the current value of the property. If it is not null and not undefined, store the value for later
-			 * 	2. Run the decorator code
-			 * 	3. Set the newly created property to the stored value of the overwritten property
-			 * Since I'm testing the function itself, steps 1 and 3 don't happen automatically. So I recreate that process
-			 */
 			let decorator = StorageProperty(null, type == "local" ? "Local" : "Session");
 
 			expect(mockStore["NewProperty"]).not.toBeDefined();
-			decorator(mockObject, "NewProperty");
-			mockObject.NewProperty = "default value";
-			mockStorage.detectChanges();
+			decorator(MockObject.prototype, "NewProperty");
+			mockObject = new MockObject(mockStorage);
 			let actual = transformer.stringify("default value");
+			mockStorage.detectChanges();
 			expect(mockStore["NewProperty"]).toBe(actual);
 		});
 
 		it("should not set default value in " + type + "Storage", () => {
-			/* 
-			 * In an angular 2 application, a detorator with a value goes through the following steps:
-			 * 	1. Retrieve the current value of the property. If it is not null and not undefined, store the value for later
-			 * 	2. Run the decorator code
-			 * 	3. Set the newly created property to the stored value of the overwritten property
-			 * Since I'm testing the function itself, steps 1 and 3 don't happen automatically. So I recreate that process
-			 */
-			let decorator = StorageProperty(null, type == "local" ? "Local" : "Session");
+			let decorator = StorageProperty("baseKey2", type == "local" ? "Local" : "Session");
 
 			let actual = transformer.stringify("value2");
 			expect(mockStore["baseKey2"]).toBe(actual);
-			decorator(mockObject, "baseKey2");
-			mockObject.NewProperty = "default value";
+			decorator(MockObject.prototype, "NewerProperty");
+			mockObject = new MockObject(mockStorage);
 			mockStorage.detectChanges();
 			expect(mockStore["baseKey2"]).toBe(actual);
 		});

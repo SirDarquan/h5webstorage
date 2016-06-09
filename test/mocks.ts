@@ -61,7 +61,9 @@ export class MockStorage extends BaseStorage {
 
 export class MockObject{
 	public TestProperty;
-	public SessionKey;	
+	public SessionKey;
+	public NewProperty = "default value";	
+	public NewerProperty = "another default value";
 	
 	constructor(private storage: Storage){
 		
