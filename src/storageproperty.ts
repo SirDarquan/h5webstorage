@@ -45,20 +45,29 @@ export function StorageProperty(...params: any[]) {
 			return storeObject;
 		}
 
+		var initialize = function (obj: any) {
+			//by adding a non-enumerable field to the object, we know if it's new or not and won't disrupt the developers code
+			Object.defineProperty(obj, "_" + options.storageKey, {
+				enumerable: false,
+				value: false,
+				writable: true
+			});
+		}
+
 		var propertyObj = {
 			get: function () {
-				initializing = false;
+				initialize(this);
 				findStore(this);
 				return storeObject.getItem(options.storageKey);
 			},
-			enumerable: false
+			enumerable: false,
 		}
 
 		//if requesting a readOnly property don't create the set
 		if (!options.readOnly) {
 			propertyObj["set"] = function (value) {
-				if (initializing) {
-					initializing = false;
+				if (!("_" + options.storageKey in this)) {
+					initialize(this);
 					findStore(this);
 					let storedValue = storeObject.getItem(options.storageKey);
 					if (typeof storedValue != "undefined") {
