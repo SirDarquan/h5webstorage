@@ -121,6 +121,34 @@ to have those types of refrences but sometime that can't be avoided. The
 `transformer` property enables replacement of the stringify/parse implementations
 used to serialize and deseralize the data from storage.
 
+### Providers
+This library was designed with great configurability in mind but that normally 
+comes at the price of simplicity. Fortunately, [angular2][]'s injector system
+allows us to make some shortcuts.
+
+#### - WEB_STORAGE_PROVIDERS
+The `WEB_STORAGE_PROVIDERS` contains everything needed to use the `LocalStorage`
+and `SessionStorage` services immediately. This can be placed in the providers array
+of the root component in your application, then  `LocalStorage` and `SessionStorage`
+can be injected at any other point of the application. This provider is really meant
+as a 'quick start' because most people will probably want to understand how the 
+system can be used and want the whole thing available.
+
+#### - BROWSER_STORAGE_PROVIDERS
+The `BROWSER_STORAGE_PROVIDERS` contain only the adapters to the native web storage
+objects and are the dependencies of the `LocalStorage` and `SessionStorage` services.
+The reason this was broken out was to first mimic actual availability of the native objects.
+If you're in a modern browser, the web storage api is always available and you can't
+have [localStorage][] without [sessionStorage][]. The second reason was to enable
+[angular universal][] compatibility. While that compatibility is not fully in place yet, 
+this is the foundation because this provider can be placed in the `bootstrap` function
+for the client-side code while a different, yet to be defined provider would be in the
+'static bootstrapper' in angular universal. With the adapters in the bootstrap code,
+the app can be a lot more selective about which components actually have access to
+storage because `LocalStorage` and `SessionStorage` will need to be added to the
+providers array of the component where access is required and this may actually be a
+better pratice to use.
+
 [angular2-localStorage]: https://github.com/marcj/angular2-localStorage
 [localStorage]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
 [sessionStorage]: https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
@@ -130,3 +158,5 @@ used to serialize and deseralize the data from storage.
 [bsl]: https://travis-ci.org/SirDarquan/h5webstorage
 [Code Climate]: https://codeclimate.com/github/SirDarquan/h5webstorage/badges/gpa.svg
 [ccl]: https://codeclimate.com/github/SirDarquan/h5webstorage
+[angular2]: https://angular.io
+[angular universal]: https://universal.angular.io/
