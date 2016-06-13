@@ -3,7 +3,7 @@
 		"module": "commonjs",
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"sourceMap": true,
+		"declaration": true,
 		"target": "es5",
 		"outDir": "dist",
 		"forceConsistentCasingInFileNames": true
