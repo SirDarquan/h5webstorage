@@ -7,7 +7,7 @@
     "postinstall": "typings install",
     "pretest": "npm run compile",
     "test": "karma start test/karma.conf.js",
-    "test:c": "concurrently \"tsc --watch\" \"karma start test/karma.conf.js --no-single-run\"",
+    "test:c": "concurrently \"tsc --watch --sourceMap\" \"karma start test/karma.conf.js --no-single-run\"",
     "build": "tsc",
     "start": "concurrently \"tsc --watch\" \"npm run lite\"",
     "lite": "single-page-server -p=8080 -b=./ -f=/example/index.html"
@@ -18,7 +18,6 @@
     "@angular/compiler": "^2.0.0-rc.1",
     "@angular/platform-browser": "^2.0.0-rc.1",
     "@angular/platform-browser-dynamic": "^2.0.0-rc.1",
-    "@angular/router-deprecated": "^2.0.0-rc.1",
     "es6-shim": "^0.35.0",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.6",
