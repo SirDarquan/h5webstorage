@@ -38,7 +38,7 @@ function copyFiles(sourceDir, targetDir){
 }
 
 function updatePackage(){
-    var packageData = require("package.json");
+    var packageData = require(path.resolve(rootDir, "package.json"));
     packageData.version = packageVersion;
     fs.writeFile(path.resolve(rootDir, "package.json"));
 }
