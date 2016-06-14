@@ -14,7 +14,7 @@ function createNpmIgnore(){
 
     ndx = files.indexOf("package.json");
     files.splice(ndx, 1);
-    
+
 	fs.writeFile(path.resolve(rootDir, ".npmignore"), files.join('\n'));
 
 }
@@ -42,13 +42,12 @@ function copyFiles(sourceDir, targetDir){
 }
 
 function updatePackage(){
-    var packageData = require(path.resolve(rootDir, "package.json"));
+    var packageData = require(path.resolve(rootDir, "src/package.json"));
     packageData.version = packageVersion;
-    fs.writeFile(path.resolve(rootDir, "package.json"));
+    fs.writeFileSync(path.resolve(rootDir, "package.json"), JSON.stringify(packageData, null, 2));
 }
 
 
 createNpmIgnore();
 copyFiles(path.resolve(rootDir, "dist/src"), rootDir);
-copyFile(path.resolve(rootDir, "src/package.json"), path.resolve(rootDir, "package.json"));
 updatePackage();
