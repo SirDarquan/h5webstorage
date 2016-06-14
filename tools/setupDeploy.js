@@ -10,7 +10,7 @@ var packageVersion = require(path.resolve(rootDir, "package.json")).version;
 function createNpmIgnore(){
 	var files = fs.readdirSync(rootDir);
     var ndx = files.indexOf("README.md");
-    files = files.splice(ndx,1);
+    files.splice(ndx,1);
 	fs.writeFile(path.resolve(rootDir, ".npmignore"), files.join('\n'));
 
 }
