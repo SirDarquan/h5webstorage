@@ -11,6 +11,10 @@ function createNpmIgnore(){
 	var files = fs.readdirSync(rootDir);
     var ndx = files.indexOf("README.md");
     files.splice(ndx,1);
+
+    ndx = files.indexOf("package.json");
+    files.splice(ndx, 1);
+    
 	fs.writeFile(path.resolve(rootDir, ".npmignore"), files.join('\n'));
 
 }
