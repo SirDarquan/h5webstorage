@@ -1,5 +1,5 @@
 import {Component, ViewChild, AfterViewInit, HostBinding} from "@angular/core";
-import { NgModel, NgClass} from "@angular/common";
+import { NgClass} from "@angular/common";
 import {TodoList} from "./todoList";
 import {TodoItemModel} from "./todoItem";
 import {TodoHeading} from "./todoHeading";
@@ -16,9 +16,7 @@ import {JsonPipe} from "./JsonPipe";
 	<pre>
 		{{localStorage | json}}
 	</pre>`,
-	directives: [TodoList, NgModel, TodoHeading],
-	pipes:[JsonPipe],
-	providers: [LocalStorage] //this is a shortcut to register all the needed parts to make LocalStorage service work properly
+	//providers: [LocalStorage], //this is a shortcut to register all the needed parts to make LocalStorage service work properly
 })
 export class TodoApp {
 	//setup a default value. If a value is already defined, it will not be overwritten

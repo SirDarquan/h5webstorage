@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter, ViewChild, AfterViewInit, HostBinding} from "@angular/core";
-import {NgModel, NgIf} from "@angular/common";
+import {NgModel} from "@angular/forms";
 
 @Component({
 	selector: "todo-item",
@@ -24,8 +24,7 @@ import {NgModel, NgIf} from "@angular/common";
 				<button (click)="switchMode(false)">Cancel</button>
 			</div>
 		</template>	
-	`,
-	directives:[NgModel, NgIf],
+	`
 })
 export class TodoItem implements AfterViewInit{
 	@Input() data: TodoItemModel;

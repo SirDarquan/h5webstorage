@@ -1,6 +1,6 @@
-import {Component, Output, EventEmitter, ViewChildren, QueryList, AfterViewInit, Input} from "@angular/core";
-import {NgFor, NgModel, NgIf} from "@angular/common";
-import {LocalStorage, ConfigureStorage} from "../../src/index";
+import { Component, Output, EventEmitter, ViewChildren, QueryList, AfterViewInit, Input } from "@angular/core";
+import { NgModel } from "@angular/forms";
+import { LocalStorage, ConfigureStorage } from "../../src/index";
 
 @Component({
 	selector: "todo-heading",
@@ -21,19 +21,18 @@ import {LocalStorage, ConfigureStorage} from "../../src/index";
 	 * We take advantage of the injector hirearchy and create a new LocalStorage service but this one will be configured
 	 * to deal only with keys with the specified prefix. All todo lists will begin with a '/'
 	 */
-	providers: [LocalStorage, ConfigureStorage({ prefix: "/" })],
-	directives: [NgFor, NgModel, NgIf]
+	providers: [LocalStorage, ConfigureStorage({ prefix: "/"})]
 })
 export class TodoHeading implements AfterViewInit {
 	@ViewChildren(NgModel) test: QueryList<NgModel>;
 	@Input() private options: { list: string, hideDoneItems: boolean }; //this is a reference so updating is global
-	private settings: {list: string, hideDoneItems: boolean};
+	private settings: { list: string, hideDoneItems: boolean };
 	private lists: string[];
 	private isEditing: boolean = false;
 
 	constructor(private localStorage: LocalStorage) {
 		this.lists = Object.keys(localStorage);	//the prefix is removed from the keys and can be accessed normally.
-		
+
 		//the settings key in  storage doesn't begin with a '/' so it's not part of this service
 		this.settings = <any>{};
 	}
@@ -41,18 +40,18 @@ export class TodoHeading implements AfterViewInit {
 	ngAfterViewInit() {
 		this.test.forEach((control) =>
 			control.update.subscribe(() => {
-				if(this.settings.list){
+				if (this.settings.list) {
 					Object.assign(this.options, this.settings);
 				}
-				else{
+				else {
 					this.isEditing = true;
 				}
 			}));
-			//copy value to prevent updating by reference after a delay to prevent data binding error
-			setTimeout(()=>this.settings = Object.assign({}, this.options), 0);
+		//copy value to prevent updating by reference after a delay to prevent data binding error
+		setTimeout(() => this.settings = Object.assign({}, this.options), 0);
 	}
-	
-	createList(newList){
+
+	createList(newList) {
 		this.localStorage[newList] = [];
 		this.settings.list = newList;
 		this.isEditing = false;

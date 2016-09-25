@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Output} from "@angular/core";
-import {NgModel} from "@angular/common";
 import {TodoItemModel} from "./todoItem";
 
 @Component({
@@ -10,8 +9,7 @@ import {TodoItemModel} from "./todoItem";
 		<label>Name</label><input type="text" [(ngModel)]="name" />
 		<label>Description</label><textarea [(ngModel)]="description"></textarea>
 		<button (click)="createItem()">Add</button>
-	</fieldset>`,
-	directives: [NgModel]
+	</fieldset>`
 })
 export class CreateItem {
 	public name: string = "";

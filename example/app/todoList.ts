@@ -1,5 +1,4 @@
 import {Component, Input} from "@angular/core";
-import {NgFor} from "@angular/common";
 import {LocalStorage, StorageProperty} from "../../src/index";
 import {TodoItem, TodoItemModel} from "./todoItem";
 import {CreateItem} from "./createItem";
@@ -9,8 +8,7 @@ import {CreateItem} from "./createItem";
 	template: `
 	<todo-item template="ngFor let item of todoItems; trackBy:tracker" [data]="item" (changed)="updateData($event)" (removed)="deleteData($event)"></todo-item>
 	<add-item (created)="addItem($event)"></add-item>
-	`,
-	directives: [NgFor, TodoItem, CreateItem]
+	`
 })
 export class TodoList{
 	@Input() public listId: string;

@@ -6,6 +6,7 @@ var packageNames = [
 	'@angular/common',
 	'@angular/compiler',
 	'@angular/core',
+	'@angular/forms',
 	'@angular/http',
 	'@angular/platform-browser',
 	'@angular/platform-browser-dynamic',
@@ -15,7 +16,8 @@ var packageNames = [
 	'@angular/upgrade',
 ];
 packageNames.forEach(function (pkgName) {
-	packages[pkgName] = { main: 'index.js', defaultExtension: 'js' };
+	var name = pkgName.match(/\/([\w-]+)/)[1];
+	packages[pkgName] = { main: 'bundles/${name}.umd.js'.replace("${name}", name), defaultExtension: 'js' };
 });
 
 System.config({
