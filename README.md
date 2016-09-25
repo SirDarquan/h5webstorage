@@ -12,25 +12,31 @@
 1. Download the library:
 
   `npm install h5webstorage --save`	
-2.  Import the Service and the Provider:
+2.  Import the module and the providers into your top level module:
 
   ```typescript
-		import {LocalStorage, WEB_STORAGE_PROVIDERS} from "h5webstorage";
+	import {WebStorageModule, BROWSER_STORAGE_PROVIDERS} from "h5webstorage";
   ```
-3. Register the provider:
+3. Register the module and providers:
 
   ```typescript
-		@Component({
-			...
-			providers:[WEB_STORAGE_PROVIDERS]	
-		})
+	@NgModule({
+		...
+		imports:[WebStorageModule],
+		providers:[BROWSER_STORAGE_PROVIDERS]	
+	})
   ```
-4. Inject the service into you class and use:
+4. Inject the service into your class and use:
 
   ```typescript
+	import {LocalStorage} from 'h5webstorage';
+	@Component({})
+	class MyComponent{
+		@StorageProperty() public SomeValue: string = null;	//This will expose a specific value in localStorage as property of this class
 		constructor(private localStorage: LocalStorage){
 			...	
 		}
+	}
   ```
 		
 ## Overview
@@ -41,7 +47,7 @@ hard references to static classes. The intention of this project was to
 determine if a higly testable version of webstorage access was possible.
 
 There is an example application that shows the various ways to use the 
-webstorage apis but overall the classes were designed to work just like
+webstorage APIs but overall the classes were designed to work just like
 the native storage objects. In fact, the `BaseStorage` object implements
 the Storage interface to give it nearly one-to-one compatibility. The 
 LocalStorage/SessionStorage objects were meant to be used as you would the native
@@ -69,23 +75,45 @@ as its backing. To keep the library testable, the native localStorage object
 is injected. Normally this would mean importing two items from the library
 and placing them both in the providers array which you can do if you 
 want to but to simplify this common scenario, the `LOCAL_STORAGE_PORVIDER`
-was created which does this job for you.
+was created which does this job for you and it's loaded as part of the
+`BROWSER_STORAGE_PROVIDERS`.
 
 ### SessionStorage
 The `SessionStorage` object is just like the `LocalStorage` object except
 for using the native [sessionStorage][] object for backing. There is also a
-`SESSION_STORAGE_PROVIDER` to simplify registration, just like `LocalStorage`.
+`SESSION_STORAGE_PROVIDER` to simplify registration, just like `LocalStorage`
+and it is also loaded with the `BROWSER_STORAGE_PROVIDERS`.
 
 ### @StorageProperty
 `StorageProperty` is a decorator used to simplifiy access to the stored values.
-It's able to accept two parameters:
-- storageKey: an alternate name for the key in storage
-- storage: a string that determines which backing to associate the field with.
-	Possible values are "Local"(default) and "Session"
+It accepts an object with the following properties:
+- __storageKey {string}__: an alternate name for the key in storage
+- __storage {'Local'|'Session'}__: a string that determines which backing to associate the field with.
+	Local is the default
+- __readOnly {boolean}__: specifies if the property allows writes. Default is false;
 
 **Note**: In order to use the `@StorageProperty` decorator, you **MUST**
-inject the storage service and make it a field of the class. See /example/app/app.ts
-for and example.
+inject the storage service and make it a field of the class. Here an 
+example showing the scenario this library was best designed for: creating a 
+strongly typed representation of your storage.
+```typescript
+	import {LocalStorage} from 'h5webstorage';
+	@Injectable()
+	class MyStorageService{
+		@StorageProperty() public SomeValue: string = null;	//This will expose a specific value in localStorage as a property of this class
+		@StorageProperty({ storageKey: 'storageName', storage: 'Session'}) public FriendlyName: string = null;	//This will expose the 'storageName' value in sessionStorage as the 'FriendlyName' property
+		@StorageProperty({readOnly: true}) public Manager: string; // Since it is readonly and initialization value isn't necessary
+		constructor(private localStorage: LocalStorage, sessionStorage: SessionStorage){	//notice LocalStorage and SessionStorage is injected even though they aren't used directly
+			...	
+		}
+	}
+```
+The `@StorageProperty` decorator syncs the stored value automatically and will even be updated is the value in storage is changed by 
+another source (like through DevTools or the same app in a different tab). That type of change will also cause a change detection to
+occur, so if the property is bound to a template, the updated value will be visible immediately. You can also do calculations on it in
+the ngOnChanges method.
+Be aware that in essence, the property __IS__ the value in storage. So if the value is an object and properties are referenced in code, 
+deleting the stored value is like setting a variable to null and exceptions can occur.
 
 ###ConfigureStorage
 The `ConfigureStorage` function creates a provider which allows you to 
@@ -113,28 +141,12 @@ another LocalStorage object that can only see keys that start with a
 specific prefix. This technique is used in the example app included to
 allow use to have multiple to do lists.
 
-#### - transformer
-By default, values are stored in JSON formatted string using the browsers
-JSON.stringify method. This 'serializer' has a limitation of not handling
-cylic refrences very well. This easiest way to get around this is just not
-to have those types of refrences but sometime that can't be avoided. The
-`transformer` property enables replacement of the stringify/parse implementations
-used to serialize and deseralize the data from storage.
-
 ### Providers
 This library was designed with great configurability in mind but that normally 
 comes at the price of simplicity. Fortunately, [angular2][]'s injector system
 allows us to make some shortcuts.
 
-#### - WEB_STORAGE_PROVIDERS
-The `WEB_STORAGE_PROVIDERS` contains everything needed to use the `LocalStorage`
-and `SessionStorage` services immediately. This can be placed in the providers array
-of the root component in your application, then  `LocalStorage` and `SessionStorage`
-can be injected at any other point of the application. This provider is really meant
-as a 'quick start' because most people will probably want to understand how the 
-system can be used and want the whole thing available.
-
-#### - BROWSER_STORAGE_PROVIDERS
+#### BROWSER_STORAGE_PROVIDERS
 The `BROWSER_STORAGE_PROVIDERS` contain only the adapters to the native web storage
 objects and are the dependencies of the `LocalStorage` and `SessionStorage` services.
 The reason this was broken out was to first mimic actual availability of the native objects.
@@ -147,7 +159,45 @@ for the client-side code while a different, yet to be defined provider would be 
 the app can be a lot more selective about which components actually have access to
 storage because `LocalStorage` and `SessionStorage` will need to be added to the
 providers array of the component where access is required and this may actually be a
-better pratice to use.
+better practice to use.
+
+#### LOCAL_STORAGE_OBJECT and SESSION_STORAGE_OBJECT
+These are the tokens used to inject the `localStorage` and `sessionStorage` native objects into
+the `LocalStorage` and `SessionStorage` objects respectivly. Using this, it is possible to have 
+`LocalStorage` and `SessionStorage` store its data in other places like for a cookie fallback.
+
+#### SERDES_OBJECT
+This is the SERializer/DESerializer object used to transform the values between storage and memory. By
+default, this is the [JSON][] object in the browser but can be replaced by pretty much anything. There
+are two (2) methods that must be implemented: stringify and parse. This can be used to have a transparent
+encryption layer for the stored values or whatever.   
+
+## Testing
+Testability was the reason this library was built in the first place. Not only is testing the library
+itself easy because of its modularity, testing an application that uses the library is just as simple.
+Here's an example using Jasmine:
+```typescript
+describe("My test suite", ()=>{
+
+	beforeEach(()=>{
+		TestBed.configureTestingModule({
+			providers:[
+				{provide: LOCAL_STORAGE_OBJECT, useValue: {"myVariable": "something"}},
+				LocalStorage,
+				MyClass
+			]
+		})
+	})
+	it("should set myVariable", inject([MyClass, LocalStorage],(sut: MyClass, ls: LocalStorage)=>{
+		expect(ls["myVariable"]).toBe('something');
+		sut.doSomething();
+		expect(ls["myVariable"]).toBe('something else');
+	}); 
+});
+``` 
+With the example above, you can verify that the logic of the class places the correct value in storage
+or performs the correct actions based on what it finds in storage.
+
 
 [angular2-localStorage]: https://github.com/marcj/angular2-localStorage
 [localStorage]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
@@ -160,3 +210,4 @@ better pratice to use.
 [ccl]: https://codeclimate.com/github/SirDarquan/h5webstorage
 [angular2]: https://angular.io
 [angular universal]: https://universal.angular.io/
+[JSON]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON
