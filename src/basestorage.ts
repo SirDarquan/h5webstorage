@@ -1,8 +1,13 @@
-import {EventEmitter, NgZone, OnDestroy, OpaqueToken} from "@angular/core";
+import { EventEmitter, NgZone, OnDestroy, OpaqueToken } from "@angular/core";
 /**
  * The token used to allow injection of the {@link StorageOptions} interface. For more information visit the {@link https://angular.io/docs/ts/latest/guide/dependency-injection.html#interface angular2 docs}.
  */
 export let STORAGE_OPTIONS = new OpaqueToken("StorageOptions");
+
+/**
+ * An object that SERializes and DESeriallizes values for storage.
+ */
+export let SERDES_OBJECT = new OpaqueToken("SerdesObject");
 
 /**
  * Defines options used by the storage classes to determine how they will interact. This will be injected into any Storage classes
@@ -52,14 +57,6 @@ export interface StorageOptions {
 	 * and all operations will stay within that scope. 
 	 */
 	prefix?: string;
-	/**
-	 * An object used to serialize value to and deserialize from storage. The default object is the native {@ link link JSON} object in
-	 * the browser. This processor has some limitations like circular references but can handle the majority of situations. For those that
-	 * it cannot handle, the option to replace it is available. The object must implement the JSON interface as defined in TypeScript but
-	 * only the basic parse and stringify methods are used. Do not attempt to replace just the functions parse and stringify as this will
-	 * affect the browsers JSON object.
-	 */
-	transformer?: JSON
 }
 enum KeyDirection {
 	From,
@@ -83,38 +80,39 @@ export abstract class BaseStorage implements OnDestroy, Storage {
 	 * [sessionStorage]: https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
 	 * @param options - Contains the options that will be used with the instance
 	 */
-    constructor(ngZone: NgZone, storage: Storage, options?: StorageOptions) {
-		options = Object.assign({}, { prefix: "", transformer: JSON }, options);
+	constructor(ngZone: NgZone, storage: Storage, transformer: JSON, options?: StorageOptions) {
+		//options = Object.assign({ prefix: "", transformer: JSON }, options);
 		this.setProperty("options", options);
+		this.setProperty("transformer", transformer);
 		this.setProperty("storage", storage);
 
 		this.UpdateFromStorage();
 
-        var subscription = ngZone.onMicrotaskEmpty.subscribe(() => {
+		var subscription = ngZone.onMicrotaskEmpty.subscribe(() => {
 			let fromStorage: boolean = this.getProperty<boolean>("fromStorage");
 			fromStorage ? this.UpdateFromStorage() : this.WriteToStorage();
 		});
-		
+
 		var listener = (event: StorageEvent) => event.storageArea == storage && this.setProperty("fromStorage", true);
 		window.addEventListener("storage", listener);
 
 		this.setProperty("subscription", subscription);
 		this.setProperty("listener", listener);
-    }
+	}
 
 	private normalizeStorageKey(name: string, dir: KeyDirection): string {
 		var options = this.getProperty<StorageOptions>("options");
 		return dir == KeyDirection.From ? name.replace(options.prefix, "") : options.prefix + name;
 	}
-	
-	private serialize(value: any){
-		let options = this.getProperty<StorageOptions>("options");
-		return options.transformer.stringify(value);
+
+	private serialize(value: any) {
+		let transformer = this.getProperty<JSON>("transformer");
+		return transformer.stringify(value);
 	}
-	
-	private deserialize(value: any){
-		let options = this.getProperty<StorageOptions>("options");
-		return options.transformer.parse(value);
+
+	private deserialize(value: any) {
+		let transformer = this.getProperty<JSON>("transformer");
+		return transformer.parse(value);
 	}
 
 	private WriteToStorage() {
@@ -166,11 +164,11 @@ export abstract class BaseStorage implements OnDestroy, Storage {
 		this.setProperty("fromStorage", false);
 	}
 
-    ngOnDestroy() {
+	ngOnDestroy() {
 		this.getProperty<EventEmitter<any>>("subscription").unsubscribe();
 		var listener = this.getProperty<any>("listener");
 		window.removeEventListener("storage", listener);
-    }
+	}
 
 	/**
 	 * Retrieves data from the object stored as a property.
