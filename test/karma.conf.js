@@ -37,26 +37,33 @@ module.exports = function (config) {
       ],
       includeFiles: [
         'node_modules/es6-shim/es6-shim.js',
+        'node_modules/reflect-metadata/Reflect.js',
         'node_modules/zone.js/dist/zone.js',
-        'node_modules/reflect-metadata/Reflect.js'
+        'node_modules/zone.js/dist/long-stack-trace-zone.js',
+        'node_modules/zone.js/dist/proxy.js',
+        'node_modules/zone.js/dist/sync-test.js',
+        'node_modules/zone.js/dist/jasmine-patch.js',
+        'node_modules/zone.js/dist/async-test.js',
+        'node_modules/zone.js/dist/fake-async-test.js',
       ],
       config: {
         defaultJSExtensions: true,
-        paths: {
-          systemjs: "node_modules/systemjs/dist/system.js",
-          'system-polyfills': "node_modules/systemjs/dist/system-polyfills.js",
-        },
         transpiler: null,
         map: {
+          systemjs: "node_modules/systemjs/dist/system.js",
           "@angular": "node_modules/@angular",
           "rxjs": "node_modules/rxjs",
+          "@angular/core/testing":"node_modules/@angular/core/bundles/core-testing.umd.js",
+          "@angular/compiler/testing":"node_modules/@angular/compiler/bundles/compiler-testing.umd.js",
+          "@angular/platform-browser/testing":"node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js",
+          "@angular/platform-browser-dynamic/testing":"node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js"
         },
         packages:{
-          "@angular/core":{main:"index.js", defaultExtension: "js"},
-          "@angular/common":{main:"index.js", defaultExtension: "js"},
-          "@angular/compiler":{main:"index.js", defaultExtension: "js"},
-          "@angular/platform-browser":{main:"index.js", defaultExtension: "js"},
-          "@angular/platform-browser-dynamic":{main:"index.js", defaultExtension: "js"}
+          "@angular/core":{main:"bundles/core.umd.js",defaultExtension: "js"},
+          "@angular/common":{main:"bundles/common.umd.js", defaultExtension: "js"},
+          "@angular/compiler":{main:"bundles/compiler.umd.js", defaultExtension: "js"},
+          "@angular/platform-browser":{main:"bundles/platform-browser.umd.js", defaultExtension: "js"},
+          "@angular/platform-browser-dynamic":{main:"bundles/platform-browser-dynamic.umd.js", defaultExtension: "js"}
         }
       }
     },

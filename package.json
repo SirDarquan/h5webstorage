@@ -10,21 +10,22 @@
     "test:c": "concurrently \"tsc --watch --sourceMap\" \"karma start test/karma.conf.js --no-single-run\"",
     "build": "tsc",
     "start": "concurrently \"tsc --watch\" \"npm run lite\"",
-    "lite": "single-page-server -p=8080 -b=./ -f=/example/index.html"
+    "lite": "single-page-server -p=8080 -b=./ -f=./example/index.html"
   },
   "author": "SirDarquan <https://github.com/SirDarquan>",
   "license": "ISC",
   "dependencies": {
-    "@angular/common": "2.0.0-rc.5",
-    "@angular/compiler": "2.0.0-rc.5",
-    "@angular/core": "2.0.0-rc.5",
-    "@angular/platform-browser": "2.0.0-rc.5",
-    "@angular/platform-browser-dynamic": "2.0.0-rc.5",
+    "@angular/common": "^2.0.1",
+    "@angular/compiler": "^2.0.1",
+    "@angular/core": "^2.0.1",
+    "@angular/forms": "^2.0.1",
+    "@angular/platform-browser": "^2.0.1",
+    "@angular/platform-browser-dynamic": "^2.0.1",
     "es6-shim": "^0.35.0",
     "reflect-metadata": "0.1.2",
-    "rxjs": "5.0.0-beta.6",
+    "rxjs": "^5.0.0-beta.12",
     "systemjs": "^0.19.26",
-    "zone.js": "^0.6.10"
+    "zone.js": "^0.6.25"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "^0.3.1",
@@ -38,8 +39,9 @@
     "karma-jasmine": "^0.3.8",
     "karma-sauce-launcher": "^0.3.1",
     "karma-systemjs": "^0.13.0",
+    "karma-source-map-support": "^1.2.0",
     "single-page-server": "^0.1.0",
-    "typescript": "^1.8.0",
+    "typescript": "^2.0.0",
     "typings": "^0.8.1"
   },
   "peerDependencies": {}
