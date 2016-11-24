@@ -28,6 +28,8 @@
     "zone.js": "^0.6.25"
   },
   "devDependencies": {
+    "@types/es6-shim": "^0.31.32",
+    "@types/jasmine": "^2.5.38",
     "codeclimate-test-reporter": "^0.3.1",
     "concurrently": "^2.0.0",
     "guid": "0.0.12",
@@ -38,11 +40,10 @@
     "karma-ie-launcher": "^0.2.0",
     "karma-jasmine": "^0.3.8",
     "karma-sauce-launcher": "^0.3.1",
-    "karma-systemjs": "^0.13.0",
     "karma-source-map-support": "^1.2.0",
+    "karma-systemjs": "^0.13.0",
     "single-page-server": "^0.1.0",
-    "typescript": "^2.0.0",
-    "typings": "^0.8.1"
+    "typescript": "^2.0.0"
   },
   "peerDependencies": {}
 }
