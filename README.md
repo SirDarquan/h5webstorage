@@ -1,4 +1,4 @@
-# h5webstorage [![Build Status][]][bsl] [![Test Coverage][]][tcl] [![Code Climate][]][ccl] 
+# h5webstorage [![npm version][]][nvl] [![Build Status][]][bsl] [![Test Coverage][]][tcl] [![Code Climate][]][ccl] 
 #### Html5 WebStorage API for Angular2
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/SirDarquan.svg)](https://saucelabs.com/u/SirDarquan)
 - [Use](#use)
@@ -141,6 +141,23 @@ another LocalStorage object that can only see keys that start with a
 specific prefix. This technique is used in the example app included to
 allow use to have multiple to do lists.
 
+#### - serializeOnException
+The h5webstorage library expects to control the localStorage and sessionStorage 
+objects completely and idealy, that meansany values ever stored was done so by 
+the library. In reality, that's not always the case. There may be values from a
+previous implementation before h5webstorage began to be used and the format of
+those values may not be compatible. By default, the library resets those values
+to null to start clean but that may not always be the desireable result.
+This property aims to help ease these types of transitions. For example, if 
+your previous implementation generally used string and integer values, the
+integers will load without a problem using the default transformer but if the
+strings don't have quotes around them they will not load. All that is actually
+needed at this point is to have that value serialized and it can then be used as-is.
+
+This property can be used in conjunction with a custom transformer to load data 
+exactly the way you want. But with more power comes more responibility, so be
+cautious.  
+
 ### Providers
 This library was designed with great configurability in mind but that normally 
 comes at the price of simplicity. Fortunately, [angular2][]'s injector system
@@ -211,3 +228,5 @@ or performs the correct actions based on what it finds in storage.
 [angular2]: https://angular.io
 [angular universal]: https://universal.angular.io/
 [JSON]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON
+[nvl]: https://badge.fury.io/js/h5webstorage
+[npm version]: https://badge.fury.io/js/h5webstorage.svg

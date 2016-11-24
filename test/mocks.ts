@@ -39,6 +39,7 @@ export class MockStore implements Storage {
 
 export class MockOptions implements StorageOptions {
 	prefix: string;
+	serializeOnException: boolean;
 }
 
 export class MockSerdes implements JSON {

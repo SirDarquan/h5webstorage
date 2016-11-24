@@ -8,14 +8,14 @@ var scenarios = [{
 	totalKeys: 4,
 	keyName: "baseKey2",
 	keyIndex: 1,
-	options: { prefix: "" }	//this is the value assigned when no options are specified
+	options: { prefix: "", serializeOnException: false }	//this is the value assigned when no options are specified
 },
 {
 	name: "basestorage with prefix",
 	totalKeys: 2,
 	keyName: "Key2",
 	keyIndex: 1,
-	options: { prefix: "prefix-" }
+	options: { prefix: "prefix-", serializeOnException: true }
 }];
 
 let mockStorage: MockStorage, mockStore: MockStore, ngZone: NgZone;
@@ -138,12 +138,14 @@ scenarios.forEach((scenario) => {
 			expect(mockStorage["otherKey"]).not.toBeDefined();
 		});
 
-		it("will return null for improperly encoded values", () => {
+		it("will handle improperly encoded values", () => {
 			mockStore[scenario.options.prefix + "badValue"] = "this is not a JSON string";
 			mockStorage
 				.createStorageEvent()
 				.detectChanges();
-			expect(mockStorage["badValue"]).toBeNull();
+				scenario.options.serializeOnException ?
+					expect(mockStorage["badValue"]).toBeTruthy() :
+					expect(mockStorage["badValue"]).toBeFalsy();
 		});
 
 		it("will return 'undefined' when index is out of range", () => {

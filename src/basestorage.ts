@@ -57,6 +57,12 @@ export interface StorageOptions {
 	 * and all operations will stay within that scope. 
 	 */
 	prefix?: string;
+
+	/**
+	 * Determines what to do when an exception occurs when loading from storage. Setting to true will cause the value retrieved
+	 * to be serialized by the loaded transformer. Otherwise, the value will be set to null (default).
+	 */
+	serializeOnException?: boolean;
 }
 enum KeyDirection {
 	From,
@@ -152,7 +158,9 @@ export abstract class BaseStorage implements OnDestroy, Storage {
 				this[_key] = this.deserialize(storage[key]);
 			}
 			catch (e) {
-				this[_key] = null;
+				this[_key] = options.serializeOnException ?
+					this.serialize(storage[key]) :
+					 null;
 			}
 
 		});
