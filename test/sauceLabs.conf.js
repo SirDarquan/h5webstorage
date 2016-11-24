@@ -80,10 +80,16 @@ module.exports = function (config) {
 			version: "latest",
 			platform: 'Windows 8.1'
 		},
-		SL_Edge: {
+		SL_Edge_Prime: {
 			base: "SauceLabs",
 			browserName: "microsoftedge",
 			version: "latest",
+			platform: 'Windows 10'
+		},
+		SL_Edge_Omega: {
+			base: "SauceLabs",
+			browserName: "microsoftedge",
+			version: "latest-1",
 			platform: 'Windows 10'
 		}
 	};
