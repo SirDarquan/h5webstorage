@@ -44,10 +44,17 @@ function copyFiles(sourceDir, targetDir){
 function updatePackage(){
     var packageData = require(path.resolve(rootDir, "src/package.json"));
     packageData.version = packageVersion;
-    fs.writeFileSync(path.resolve(rootDir, "package.json"), JSON.stringify(packageData, null, 2));
+    fs.writeFileSync(path.resolve(rootDir, "dist/src/package.json"), JSON.stringify(packageData, null, 2));
 }
 
+function createNpmrc(){
+    var npmToken = process.env.NPM_TOKEN;
+    fs.writeFileSync('.npmrc', '//registry.npmjs.org/:_authToken=' + npmToken +'\n');
+}
 
-createNpmIgnore();
-copyFiles(path.resolve(rootDir, "dist/src"), rootDir);
+createNpmrc();
+//createNpmIgnore();
+//copyFiles(path.resolve(rootDir, "dist/src"), rootDir);
+copyFile(path.resolve(rootDir, "README.md"), path.resolve(rootDir, "dist/src"));
+//copyFile(path.resolve(rootDir, "src/package.json"),path.resolve(rootDir, "dist/src"));
 updatePackage();

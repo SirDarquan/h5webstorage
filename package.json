@@ -4,7 +4,6 @@
   "description": "HTML5 WebStorage API for angular2",
   "scripts": {
     "compile": "tsc",
-    "postinstall": "typings install",
     "pretest": "npm run compile",
     "test": "karma start test/karma.conf.js",
     "test:c": "concurrently \"tsc --watch --sourceMap\" \"karma start test/karma.conf.js --no-single-run\"",
@@ -21,14 +20,13 @@
     "@angular/forms": "^2.0.1",
     "@angular/platform-browser": "^2.0.1",
     "@angular/platform-browser-dynamic": "^2.0.1",
-    "es6-shim": "^0.35.0",
+    "@types/es6-shim": "^0.31.32",
     "reflect-metadata": "0.1.2",
     "rxjs": "^5.0.0-beta.12",
     "systemjs": "^0.19.26",
     "zone.js": "^0.6.25"
   },
   "devDependencies": {
-    "@types/es6-shim": "^0.31.32",
     "@types/jasmine": "^2.5.38",
     "codeclimate-test-reporter": "^0.3.1",
     "concurrently": "^2.0.0",
