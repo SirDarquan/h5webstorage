@@ -55,6 +55,6 @@ function createNpmrc(){
 createNpmrc();
 //createNpmIgnore();
 //copyFiles(path.resolve(rootDir, "dist/src"), rootDir);
-copyFile(path.resolve(rootDir, "README.md"), path.resolve(rootDir, "dist/src"));
+copyFile(path.resolve(rootDir, "README.md"), path.resolve(rootDir, "dist/src/README.md"));
 //copyFile(path.resolve(rootDir, "src/package.json"),path.resolve(rootDir, "dist/src"));
 updatePackage();
