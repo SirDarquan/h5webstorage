@@ -7,16 +7,8 @@ var packageVersion = require(path.resolve(rootDir, "package.json")).version;
 
 
 
-function createNpmIgnore(){
-	var files = fs.readdirSync(rootDir);
-    var ndx = files.indexOf("README.md");
-    files.splice(ndx,1);
-
-    ndx = files.indexOf("package.json");
-    files.splice(ndx, 1);
-
-	fs.writeFile(path.resolve(rootDir, ".npmignore"), files.join('\n'));
-
+function createNpmIgnore(content){
+	fs.writeFile(path.resolve(rootDir, ".npmignore"), content.join('\n'));
 }
 function copyFile(source, target) {
     return new Promise(function(resolve, reject) {
@@ -43,7 +35,7 @@ function copyFiles(sourceDir, targetDir){
 
 function updatePackage(){
     var packageData = require(path.resolve(rootDir, "src/package.json"));
-    packageData.version = packageVersion;
+    packageData.version = process.env.TRAVIS_TAG;
     fs.writeFileSync(path.resolve(rootDir, "dist/src/package.json"), JSON.stringify(packageData, null, 2));
 }
 
@@ -53,8 +45,6 @@ function createNpmrc(){
 }
 
 createNpmrc();
-//createNpmIgnore();
-//copyFiles(path.resolve(rootDir, "dist/src"), rootDir);
+createNpmIgnore(["*.spec.*"]);
 copyFile(path.resolve(rootDir, "README.md"), path.resolve(rootDir, "dist/src/README.md"));
-//copyFile(path.resolve(rootDir, "src/package.json"),path.resolve(rootDir, "dist/src"));
 updatePackage();
