@@ -7,8 +7,8 @@ var packageVersion = require(path.resolve(rootDir, "package.json")).version;
 
 
 
-function createNpmIgnore(content){
-	fs.writeFile(path.resolve(rootDir, ".npmignore"), content.join('\n'));
+function createNpmIgnore(path, content){
+	fs.writeFile(path.resolve(path, ".npmignore"), content.join('\n'));
 }
 function copyFile(source, target) {
     return new Promise(function(resolve, reject) {
@@ -45,6 +45,6 @@ function createNpmrc(){
 }
 
 createNpmrc();
-createNpmIgnore(["*.spec.*"]);
+createNpmIgnore(path.resolve(rootDir, "dist/src"), ["*.spec.*"]);
 copyFile(path.resolve(rootDir, "README.md"), path.resolve(rootDir, "dist/src/README.md"));
 updatePackage();
