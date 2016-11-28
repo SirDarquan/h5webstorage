@@ -3,6 +3,10 @@ import { StorageOptions, STORAGE_OPTIONS, SERDES_OBJECT } from "./basestorage";
 import { LocalStorage, LOCAL_STORAGE_OBJECT } from "./localstorage";
 import { SessionStorage, SESSION_STORAGE_OBJECT } from "./sessionstorage";
 
+/**
+ * Makes the  LocalStorage and SessionStorage objects available throught the application. Should be
+ * added to the RootModule imports list.
+ */
 @NgModule({
 	providers: [LocalStorage, SessionStorage]
 })

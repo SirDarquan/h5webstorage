@@ -115,7 +115,7 @@ the ngOnChanges method.
 Be aware that in essence, the property __IS__ the value in storage. So if the value is an object and properties are referenced in code, 
 deleting the stored value is like setting a variable to null and exceptions can occur.
 
-###ConfigureStorage
+### ConfigureStorage
 The `ConfigureStorage` function creates a provider which allows you to 
 inject configuration options for the storage object(s) to be used. 
 One thing to remember is that the ConfigureStorage provider will only 
@@ -228,5 +228,5 @@ or performs the correct actions based on what it finds in storage.
 [angular2]: https://angular.io
 [angular universal]: https://universal.angular.io/
 [JSON]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON
-[nvl]: https://badge.fury.io/js/h5webstorage
+[nvl]: https://www.npmjs.com/package/h5webstorage
 [npm version]: https://badge.fury.io/js/h5webstorage.svg

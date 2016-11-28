@@ -2,12 +2,46 @@ import {LocalStorage} from "./localstorage";
 import {SessionStorage} from "./sessionstorage";
 
 /**
- * Associates a property with a key in storage
+ * A decorator that associates a property with a key in storage
  * @param options - An object containing properties to determine how the property behaves
  * - storageKey {string} [optional]: The name of the key in storage to use. If not supplied or null, the name of the property is used
  * - storage ("Local" | "Session"): Chooses the type of storage to use (default: "Local")
  * - readOnly {boolean}: determines if the property is read/write or readOnly (default: read/write)
- */
+ *
+ * ### Example - How to use StorageProperty
+ * #### Default options with initialization
+ * 
+ *     export class TodoApp { 
+ *      //setup a default value. If a value is already defined, it will not be overwritten
+ * 
+ *      @StorageProperty() 
+ *      public settings: any = { list: "todolist", hideDoneItems: true };
+ *    
+ *      constructor(private localStorage: LocalStorage) {...}
+ *     }
+
+ * #### Attach to SessionStorage with initialization
+ * 
+ *     export class TodoApp { 
+ *      //setup a default value. If a value is already defined, it will not be overwritten
+ * 
+ *      @StorageProperty({storage: "Session"}) 
+ *      public settings: any = { list: "todolist", hideDoneItems: true };
+ *    
+ *      constructor(private sessionStorage: sessionStorage) {...}
+ *     }
+ * 
+ * #### Attached to 'mysettings' key instead of settings and is not write-able
+ * 
+ *     export class TodoApp { 
+ *      //setup a default value. If a value is already defined, it will not be overwritten
+ * 
+ *      @StorageProperty({readOnly: true, storageKey: "mysettings"}) 
+ *      public settings: any = { list: "todolist", hideDoneItems: true };
+ *    
+ *      constructor(private localStorage: LocalStorage) {...}
+ *     }
+*/
 export function StorageProperty(options: { storageKey?: string, storage?: "Local" | "Session", readOnly?: boolean });
 /**
  * Associates a property with a key in storage

@@ -5,44 +5,52 @@ import { EventEmitter, NgZone, OnDestroy, OpaqueToken } from "@angular/core";
 export let STORAGE_OPTIONS = new OpaqueToken("StorageOptions");
 
 /**
- * An object that SERializes and DESeriallizes values for storage.
+ * An object that SERializes and DESeriallizes values for storage. The default implementation for the SerDes object is:
+ * `{ provide: SERDES_OBJECT, useValue: { stringify: JSON.stringify, parse: JSON.parse } }` which is essentially the 
+ * `{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON window.JSON}` object.
+ * Due to the fact that the JSON object is also an interface in TypeScript, it couldn't be used as-is. This is the reason
+ * the default implementation defines the `stringify` and `parse` methods individually instead of just using the JSON object
+ * as the value.
+ * 
+ * Should you want to implement customized serialization and deserialization for something like encrypted storage, simply
+ * provide new methods for stringify and parse and you're good to go. 
  */
 export let SERDES_OBJECT = new OpaqueToken("SerdesObject");
 
 /**
  * Defines options used by the storage classes to determine how they will interact. This will be injected into any Storage classes
- * created with or after creation of the options. Here is the most common usage of StorageOptions:
- * ```typescript
- * import {Component} from "angular2/core";
- * import {ConfigureStorage} from "h5webstorage/api";
+ * created with or after creation of the options. Here is a comon usage of StorageOptions:
  * 
- * @Component({
- * 	providers:[ConfigureStorage({ prefix: '/'})]
- * })
- * export class RootApp{}
- * ```
+ *     import {Component} from "@angular/core";
+ *     import {ConfigureStorage} from "h5webstorage";
+ * 
+ *     @Component({
+ * 	     providers:[ConfigureStorage({ prefix: ''})]
+ *     })
+ *     export class AppModule{}
+ * 
  * 
  * {@link ConfigureStorage} creates a provider for your configuration options which is injected into the next Storage class instantiated.
- * Since these options were added to the 'RootApp', it will apply globally and all {@link LocalStorage} and {@link SessionStorage} will
+ * Since these options were added to the 'AppModule', it will apply globally and all {@link LocalStorage} and {@link SessionStorage} will
  * have these options injected unless overridden by a new set of options.
  * 
  * Remember, {@link https://angular.io angular2} has an injection heirarchy and multiple providers for one type can be created. Lets explore
- * how this might work. Using our example above, the prefix '/' is used on all keys for the entire application. This is so some rouge 
- * application won't polute the keyspace of your app. Let's also assume we have created a wrapper around the `LocalStorage` object to apply
+ * how this might work. Using our example above, the prefix '/' is used on all keys for the entire application. This will prevent h5websetorage
+ * from assuming it controls all the keys in storage. Let's also assume we have created a wrapper around the `LocalStorage` object to apply
  * business logic to the data and a subset of the keys needs to be read-only admin stuff. How can we set the values if the wrapper of those
  * values are read-only? Here is how I would solve this problem:
- * ```typescript
- * import {Component} from "angular2/core";
- * import {LocalStorage, LOCAL_STORAGE_PROVIDER, ConfigureStorage} from "h5webstorage/api";
- * import {AppSettings} from "./myApp.settings";
- * @Component({
- * 	providers: [LOCAL_STORAGE_PROVIDER, ConfigureStorage({ prefix: '/admin/'})]
- * })
- * export class AdminPanel{
- * 	constructor(localStorage: LocalStorage, settings: AppSettings){ ... }
- * }
- * ``` 
- * Let me explain what just happened, AdminPanel is a component under RootApp. AppSettings is the global application setting that handles
+ * 
+ *     import {Component} from "@angular/core";
+ *     import {LocalStorage, ConfigureStorage} from "h5webstorage";
+ *     import {AppSettings} from "./myApp.settings";
+ *     @Component({
+ *     	providers: [LocalStorage, ConfigureStorage({ prefix: '/admin/'})]
+ *     })
+ *     export class AdminPanel{
+ *     	constructor(localStorage: LocalStorage, settings: AppSettings){ ... }
+ *     }
+ *  
+ * Let me explain what just happened, AdminPanel is a component under AppModule. AppSettings is the global application setting that handles
  * business logic for the storage which has the read-only admin area. AppSettings can see all the application keys that begin with '/' so 
  * that includes '/admin/'. AdminPanel takes advantage of the injection heirarcy in angular2 by asking for a new instance of `LocalStorage`.
  * If we stopped there, it would work the exact same way as the `LocalStorage` in AppSettings which is why there is a new `ConfigureStorage`
@@ -73,6 +81,8 @@ enum KeyDirection {
  * BaseStorage is where all the implementation of the storage system resides. This can be used to make custom storage objects if needed
  * but more than likely, `LocalStorage` and `SessionStorage` will handle everything you need and creating services around those will 
  * be easier than creating a new storage object. But for those situations where something else is needed, this is the class for you.
+ * 
+ * NOTE: BaseStorage is an abstract class but the documentation generator makes no distintion. 
  */
 export abstract class BaseStorage implements OnDestroy, Storage {
 
@@ -80,10 +90,11 @@ export abstract class BaseStorage implements OnDestroy, Storage {
 	 * Initializes the storage system by attaching to the angular2 change detection system and the Storage event system. Then 
 	 * syncronizes the object with data from storage while respecting the options set. {@link LocalStorage}
 	 * 
-	 * @param ngZone - 
+	 * @param ngZone - The Zone handling angular 2 change detection.
 	 * @param storage - An object that implements the Storage interface. Generally [localStorage][] or [sessionStorage][]
 	 * [localStorage]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
 	 * [sessionStorage]: https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
+	 * @param transformer - An object that implements the JSON interface. This is injected using the {@link SERDES_OBJECT}
 	 * @param options - Contains the options that will be used with the instance
 	 */
 	constructor(ngZone: NgZone, storage: Storage, transformer: JSON, options?: StorageOptions) {
