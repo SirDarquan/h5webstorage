@@ -6,7 +6,7 @@ addons:
 after_script:
   - codeclimate-test-reporter < dist/coverage/lcov.info
 after_success:
-  skip_cleanup: true
+  - skip_cleanup
   - tools/deploy-docs.sh
 before_deploy:
   - node tools/setupDeploy
