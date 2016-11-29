@@ -11,7 +11,7 @@
     "start": "concurrently \"tsc --watch\" \"npm run lite\"",
     "lite": "single-page-server -p=8080 -b=./ -f=./example/index.html",
     "docs": "single-page-server -p=8080 -b=./ -f=./dist/docs/index.html",
-    "documentation": "typedoc --out ../docs --module commonjs --target es5 --exclude ./src/*.spec.ts --excludeExternals --ignoreCompilerErrors --mode file --excludePrivate ./src/index.ts ./src/basestorage.ts ./src/localstorage.ts ./src/sessionstorage.ts ./src/storageproperty.ts"
+    "documentation": "typedoc --out ../docs --module commonjs --target es5 --exclude ./src/*.spec.ts --excludeExternals --ignoreCompilerErrors --mode file --excludePrivate --disableOutputCheck ./src/index.ts ./src/basestorage.ts ./src/localstorage.ts ./src/sessionstorage.ts ./src/storageproperty.ts"
   },
   "author": "SirDarquan <https://github.com/SirDarquan>",
   "license": "ISC",
