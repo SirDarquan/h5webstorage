@@ -11,17 +11,18 @@ SHA=`git rev-parse --verify HEAD`
 
 # Clone the existing gh-pages for this repo into out/
 # Create a new empty branch if gh-pages doesn't exist yet (should only happen on first deply)
-cd ..
-git clone $REPO docs
-cd docs
-git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
-cd ..
+#cd ..
+mkdir ../docs
+# git clone $REPO docs
+# cd docs
+# git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
+# cd ..
 
 # Clean out existing contents
-rm -rf docs/**/* || exit 0
+#rm -rf docs/**/* || exit 0
 
 # Copy contents from ./SirDarquan/h5webstorage/dist/docs
-cd h5webstorage
+#cd h5webstorage
 npm run documentation
 
 # Now let's go have some fun with the cloned repo
