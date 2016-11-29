@@ -1,18 +1,4 @@
 language: node_js
 node_js:
   - "6"
-addons:
-  sauce_connect: true
-after_script:
-  - codeclimate-test-reporter < dist/coverage/lcov.info
-after_success:
-  - skip_cleanup
-  - tools/deploy-docs.sh
-before_deploy:
-  - node tools/setupDeploy
-deploy:
-  provider: script
-  script: npm publish dist/src 
-  skip_cleanup: true
-  on:
-    tags: true
+script: tools/deploy-docs.sh
