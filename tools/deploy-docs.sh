@@ -25,7 +25,7 @@ cd h5webstorage
 npm run documentation
 
 # Now let's go have some fun with the cloned repo
-cd docs
+cd ../docs
 git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
