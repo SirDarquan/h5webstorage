@@ -1,4 +1,6 @@
 language: node_js
 node_js:
   - "6"
+env:
+  - secure: "O5hgk8K/j4D7Ng5iCjNTnFtYlamsyYtJRHXCbJ2XC9KhPrfq3vMtMp9WbXWR0iAcr+BHYWfTFLMumHj+SMviuqiFKPFqdTBaLFT2vWMv4j4cGrIeKzcnNIpTvfSdfkZNIH61citnaLF+mOeddM3mg0mWk1PNRqFFUHz5XHGQGv8="
 script: bash tools/deploy-docs.sh
