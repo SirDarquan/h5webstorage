@@ -32,7 +32,7 @@ git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 #If there are no changes to the compiled out (e.g. this is a README update) then just bail.
-if [  -z $(git status --porcelain) ]; then
+if [[-z $(git status --porcelain) ]]; then
     echo "No changes to the output on this push; exiting."
     exit 0
 fi
@@ -43,7 +43,10 @@ git add .
 git commit -m "Deploy to GitHub Pages: ${SHA}"
 
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc
-cat > deploy_key << EOF $DEPLOY_KEY EOF
+cat > deploy_key <<EOF 
+ssh-rsa $DEPLOY_KEY $COMMIT_AUTHOR_EMAIL 
+EOF
+
 chmod 600 deploy_key
 eval `ssh-agent -s`
 ssh-add deploy_key
