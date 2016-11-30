@@ -31,7 +31,7 @@ cd docs
 git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
-If there are no changes to the compiled out (e.g. this is a README update) then just bail.
+#If there are no changes to the compiled out (e.g. this is a README update) then just bail.
 if [ -z `git diff --exit-code` ]; then
     echo "No changes to the output on this push; exiting."
     exit 0
