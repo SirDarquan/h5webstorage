@@ -47,3 +47,8 @@ git commit -m "Deploy to GitHub Pages: ${SHA}"
 
 # Now that we're all set up, we can push.
 git push $SSH_REPO $TARGET_BRANCH
+
+
+# Attrition:
+# https://gist.github.com/domenic/ec8b0fc8ab45f39403dd for the over all structure
+# https://gist.github.com/kzap/5819745 for the encryption method that didn't require the travis cli
