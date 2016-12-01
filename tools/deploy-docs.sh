@@ -21,7 +21,7 @@ cd h5webstorage
 npm run documentation
 
 # If there are no changes to the documentation then just bail.
-if [[-z $(git status --porcelain) ]]; then
+if [ -z "$(git status --porcelain)" ]; then
     echo "No changes to the output on this push; exiting."
     exit 0
 fi
