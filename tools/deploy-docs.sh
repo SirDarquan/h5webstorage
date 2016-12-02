@@ -27,7 +27,7 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 # Get the deploy key by using stored variables to decrypt deploy.enc
-openssl aes-256-cbc -passin "pass:$DEPLOY_PASS" -in ./tools/deploy.enc -out ./tools/deploy_key -d -a
+openssl aes-256-cbc -pass "pass:$DEPLOY_KEY" -in ./tools/deploy.enc -out ./tools/deploy_key -d -a
 chmod 600 ./tools/deploy_key
 eval `ssh-agent -s`
 ssh-add ./tools/deploy_key
