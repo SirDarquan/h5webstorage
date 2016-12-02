@@ -2,5 +2,6 @@ language: node_js
 node_js:
   - "6"
 env:
-  - secure: "H3mgL34GHGKTFSxI5G3o5H6Bb5dqWhqtJ0U7zDG61w3JvtKjf4CMmUSh8wCu5K7ZaygwkqDXTL/xUgXNvjA3p9HhnxgQqmokQj3IYURGTq18148cVcgKwXa7vedEZUtFtkv7J7wGAU91My5j/O8coFM5YG5xQ1PgXSh2e7tkL3w="
+  - secure: "SBULGG1jzOVtuthBX1jVlY9ippEuqVqweQ07m/pwc+Ow45rAk1KOTi3yXdZvldEyfYTrF818Qc0ZVw4D1y78NZQ0LalnvcTdoiw/SYcL8ibzRvteiFYBCHD2DW12P7197ag5v6TZHabO0pDLwajNv++/HPTf6gp07H5bc61jMFo="
+  - secure: "JsEfkratR6c8lQzfP0MGTVLZZXp21RfceuHXheYdFCR5CuWY5cuMnIGRL+2BGO73MenSzX9Zdug7oDsNuMrDUFVgx3i/6/uhLfU8Q0589nuPlUspPpvvqmYAYFW02b2Mm9zYr03kuHLqSgFTWCuZe1ETG42L0mTFWQNCSb6oGek="
 script: bash tools/deploy-docs.sh
