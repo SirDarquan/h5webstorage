@@ -1,0 +1,395 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>h5webstorage</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">h5webstorage</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> h5webstorage</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<h1 id="h5webstorage-npm-version-nvl-build-status-bsl-test-coverage-tcl-code-climate-ccl-">h5webstorage <a href="https://www.npmjs.com/package/h5webstorage"><img src="https://badge.fury.io/js/h5webstorage.svg" alt="npm version"></a> <a href="https://travis-ci.org/SirDarquan/h5webstorage"><img src="https://travis-ci.org/SirDarquan/h5webstorage.svg?branch=master" alt="Build Status"></a> <a href="https://codeclimate.com/github/SirDarquan/h5webstorage/coverage"><img src="https://codeclimate.com/github/SirDarquan/h5webstorage/badges/coverage.svg" alt="Test Coverage"></a> <a href="https://codeclimate.com/github/SirDarquan/h5webstorage"><img src="https://codeclimate.com/github/SirDarquan/h5webstorage/badges/gpa.svg" alt="Code Climate"></a></h1>
+				<h4 id="html5-webstorage-api-for-angular2">Html5 WebStorage API for Angular2</h4>
+				<p><a href="https://saucelabs.com/u/SirDarquan"><img src="https://saucelabs.com/browser-matrix/SirDarquan.svg" alt="Sauce Test Status"></a></p>
+				<ul>
+					<li><a href="#use">Use</a></li>
+					<li><a href="#overview">Overview</a><ul>
+							<li><a href="#localstorage">LocalStorage</a> (service)</li>
+							<li><a href="#sessionstorage">SessionStorage</a> (service)</li>
+							<li><a href="#storageproperty">@StorageProperty</a> (decorator)</li>
+							<li><a href="#configurestorage">ConfigureStorage</a> (function)</li>
+						</ul>
+					</li>
+				</ul>
+				<h2 id="use">Use</h2>
+				<ol>
+					<li><p>Download the library:</p>
+						<p><code>npm install h5webstorage --save</code>    </p>
+					</li>
+					<li><p>Import the module and the providers into your top level module:</p>
+						<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> {WebStorageModule, BROWSER_STORAGE_PROVIDERS} from <span class="hljs-string">"h5webstorage"</span>;
+</code></pre>
+					</li>
+					<li><p>Register the module and providers:</p>
+						<pre><code class="lang-typescript"> @NgModule({
+     ...
+     imports:[WebStorageModule],
+     providers:[BROWSER_STORAGE_PROVIDERS]    
+ })
+</code></pre>
+					</li>
+					<li><p>Inject the service into your class and use:</p>
+						<pre><code class="lang-typescript"> <span class="hljs-keyword">import</span> {LocalStorage} from <span class="hljs-string">'h5webstorage'</span>;
+ @Component({})
+ <span class="hljs-keyword">class</span> MyComponent{
+     @StorageProperty() <span class="hljs-keyword">public</span> SomeValue: <span class="hljs-built_in">string</span> = <span class="hljs-literal">null</span>;    <span class="hljs-comment">//This will expose a specific value in localStorage as property of this class</span>
+     <span class="hljs-keyword">constructor</span>(private localStorage: LocalStorage){
+         ...    
+     }
+ }
+</code></pre>
+					</li>
+				</ol>
+				<h2 id="overview">Overview</h2>
+				<p>The <a href="https://github.com/marcj/angular2-localStorage">angular2-localStorage</a> project is what inspired this project with
+					its use of a decorator to access the values in the storage area.
+					Unfortunately, the implementation was difficult to test do to the use of
+					hard references to static classes. The intention of this project was to
+				determine if a higly testable version of webstorage access was possible.</p>
+				<p>There is an example application that shows the various ways to use the
+					webstorage APIs but overall the classes were designed to work just like
+					the native storage objects. In fact, the <code>BaseStorage</code> object implements
+					the Storage interface to give it nearly one-to-one compatibility. The
+					LocalStorage/SessionStorage objects were meant to be used as you would the native
+				localStorage/sessionStorage objects. Here&#39;s a quick example:</p>
+				<pre><code class="lang-typescript">    <span class="hljs-keyword">constructor</span>(private localStorage: LocalStorage){
+        <span class="hljs-keyword">this</span>.localStorage[<span class="hljs-string">"firstKey"</span>] = <span class="hljs-string">"This value will appear in storage"</span>;
+        <span class="hljs-keyword">this</span>.localStorage.setItem(<span class="hljs-string">"secondKey"</span>, <span class="hljs-string">"This will also"</span>);
+        <span class="hljs-keyword">var</span> retrieved = <span class="hljs-keyword">this</span>.localStorage[<span class="hljs-string">"storedKey"</span>]; <span class="hljs-comment">//if there is a value in storage it would be retrieved</span>
+        <span class="hljs-built_in">console</span>.log(retrieved);     
+    }
+</code></pre>
+				<p>There is one minor exception: Native storage objects can use a number index
+					while the wrappers can&#39;t. I&#39;ve never actually seen them used this way so I
+				can&#39;t imagine it&#39;s a widely used feature and I&#39;m OK with that missing piece.</p>
+				<p>Finally, the storage objects are bound both ways, so if a change occurs in
+					storage, the WebStorage objects receives the change and the application is
+				immediately updated.</p>
+				<h3 id="localstorage">LocalStorage</h3>
+				<p>The <code>LocalStorage</code> object is the service that uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">localStorage</a> object
+					as its backing. To keep the library testable, the native localStorage object
+					is injected. Normally this would mean importing two items from the library
+					and placing them both in the providers array which you can do if you
+					want to but to simplify this common scenario, the <code>LOCAL_STORAGE_PORVIDER</code>
+					was created which does this job for you and it&#39;s loaded as part of the
+				<code>BROWSER_STORAGE_PROVIDERS</code>.</p>
+				<h3 id="sessionstorage">SessionStorage</h3>
+				<p>The <code>SessionStorage</code> object is just like the <code>LocalStorage</code> object except
+					for using the native <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage">sessionStorage</a> object for backing. There is also a
+					<code>SESSION_STORAGE_PROVIDER</code> to simplify registration, just like <code>LocalStorage</code>
+				and it is also loaded with the <code>BROWSER_STORAGE_PROVIDERS</code>.</p>
+				<h3 id="-storageproperty">@StorageProperty</h3>
+				<p><code>StorageProperty</code> is a decorator used to simplifiy access to the stored values.
+				It accepts an object with the following properties:</p>
+				<ul>
+					<li><strong>storageKey {string}</strong>: an alternate name for the key in storage</li>
+					<li><strong>storage {&#39;Local&#39;|&#39;Session&#39;}</strong>: a string that determines which backing to associate the field with.
+					Local is the default</li>
+					<li><strong>readOnly {boolean}</strong>: specifies if the property allows writes. Default is false;</li>
+				</ul>
+				<p><strong>Note</strong>: In order to use the <code>@StorageProperty</code> decorator, you <strong>MUST</strong>
+					inject the storage service and make it a field of the class. Here an
+					example showing the scenario this library was best designed for: creating a
+				strongly typed representation of your storage.</p>
+				<pre><code class="lang-typescript">    <span class="hljs-keyword">import</span> {LocalStorage} from <span class="hljs-string">'h5webstorage'</span>;
+    @Injectable()
+    <span class="hljs-keyword">class</span> MyStorageService{
+        @StorageProperty() <span class="hljs-keyword">public</span> SomeValue: <span class="hljs-built_in">string</span> = <span class="hljs-literal">null</span>;    <span class="hljs-comment">//This will expose a specific value in localStorage as a property of this class</span>
+        @StorageProperty({ storageKey: <span class="hljs-string">'storageName'</span>, storage: <span class="hljs-string">'Session'</span>}) <span class="hljs-keyword">public</span> FriendlyName: <span class="hljs-built_in">string</span> = <span class="hljs-literal">null</span>;    <span class="hljs-comment">//This will expose the 'storageName' value in sessionStorage as the 'FriendlyName' property</span>
+        @StorageProperty({readOnly: <span class="hljs-literal">true</span>}) <span class="hljs-keyword">public</span> Manager: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Since it is readonly and initialization value isn't necessary</span>
+        <span class="hljs-keyword">constructor</span>(private localStorage: LocalStorage, sessionStorage: SessionStorage){    <span class="hljs-comment">//notice LocalStorage and SessionStorage is injected even though they aren't used directly</span>
+            ...    
+        }
+    }
+</code></pre>
+				<p>The <code>@StorageProperty</code> decorator syncs the stored value automatically and will even be updated is the value in storage is changed by
+					another source (like through DevTools or the same app in a different tab). That type of change will also cause a change detection to
+					occur, so if the property is bound to a template, the updated value will be visible immediately. You can also do calculations on it in
+					the ngOnChanges method.
+					Be aware that in essence, the property <strong>IS</strong> the value in storage. So if the value is an object and properties are referenced in code,
+				deleting the stored value is like setting a variable to null and exceptions can occur.</p>
+				<h3 id="configurestorage">ConfigureStorage</h3>
+				<p>The <code>ConfigureStorage</code> function creates a provider which allows you to
+					inject configuration options for the storage object(s) to be used.
+					One thing to remember is that the ConfigureStorage provider will only
+					inject into new instances of LocalStorage/SessionStorage. So if you inject
+					<code>LocalStorage</code> into the root component and only provide <code>ConfigureStorage</code>
+					in a sub-component, it will never be used. But inversely, if the Root
+					component contains the <code>ConfigureStorage</code> provider, then all sub-components
+					that inject <code>LocalStorage</code>/<code>SessionStorage</code> will have the options configured.
+				Here&#39;s an example of <code>ConfigureStorage</code> being used:</p>
+				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> {ConfigureStorage} from <span class="hljs-string">"h5webstorage"</span>;
+@Component({
+    providers:[ConfigureStorage({ prefix: <span class="hljs-string">"myPrefix-"</span> })]    
+})
+<span class="hljs-keyword">class</span> myClass{}
+</code></pre>
+				<h4 id="-prefix">- prefix</h4>
+				<p>The storage key prefix has some handy uses. With the angular2
+					injector hierarchy, the root component can inject a LocalStorage object
+					that can &#39;see&#39; all the available keys. Then a sub-component can inject
+					another LocalStorage object that can only see keys that start with a
+					specific prefix. This technique is used in the example app included to
+				allow use to have multiple to do lists.</p>
+				<h4 id="-serializeonexception">- serializeOnException</h4>
+				<p>The h5webstorage library expects to control the localStorage and sessionStorage
+					objects completely and idealy, that meansany values ever stored was done so by
+					the library. In reality, that&#39;s not always the case. There may be values from a
+					previous implementation before h5webstorage began to be used and the format of
+					those values may not be compatible. By default, the library resets those values
+					to null to start clean but that may not always be the desireable result.
+					This property aims to help ease these types of transitions. For example, if
+					your previous implementation generally used string and integer values, the
+					integers will load without a problem using the default transformer but if the
+					strings don&#39;t have quotes around them they will not load. All that is actually
+				needed at this point is to have that value serialized and it can then be used as-is.</p>
+				<p>This property can be used in conjunction with a custom transformer to load data
+					exactly the way you want. But with more power comes more responibility, so be
+				cautious.  </p>
+				<h3 id="providers">Providers</h3>
+				<p>This library was designed with great configurability in mind but that normally
+					comes at the price of simplicity. Fortunately, <a href="https://angular.io">angular2</a>&#39;s injector system
+				allows us to make some shortcuts.</p>
+				<h4 id="browser_storage_providers">BROWSER_STORAGE_PROVIDERS</h4>
+				<p>The <code>BROWSER_STORAGE_PROVIDERS</code> contain only the adapters to the native web storage
+					objects and are the dependencies of the <code>LocalStorage</code> and <code>SessionStorage</code> services.
+					The reason this was broken out was to first mimic actual availability of the native objects.
+					If you&#39;re in a modern browser, the web storage api is always available and you can&#39;t
+					have <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">localStorage</a> without <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage">sessionStorage</a>. The second reason was to enable
+					<a href="https://universal.angular.io/">angular universal</a> compatibility. While that compatibility is not fully in place yet,
+					this is the foundation because this provider can be placed in the <code>bootstrap</code> function
+					for the client-side code while a different, yet to be defined provider would be in the
+					&#39;static bootstrapper&#39; in angular universal. With the adapters in the bootstrap code,
+					the app can be a lot more selective about which components actually have access to
+					storage because <code>LocalStorage</code> and <code>SessionStorage</code> will need to be added to the
+					providers array of the component where access is required and this may actually be a
+				better practice to use.</p>
+				<h4 id="local_storage_object-and-session_storage_object">LOCAL_STORAGE_OBJECT and SESSION_STORAGE_OBJECT</h4>
+				<p>These are the tokens used to inject the <code>localStorage</code> and <code>sessionStorage</code> native objects into
+					the <code>LocalStorage</code> and <code>SessionStorage</code> objects respectivly. Using this, it is possible to have
+				<code>LocalStorage</code> and <code>SessionStorage</code> store its data in other places like for a cookie fallback.</p>
+				<h4 id="serdes_object">SERDES_OBJECT</h4>
+				<p>This is the SERializer/DESerializer object used to transform the values between storage and memory. By
+					default, this is the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON">JSON</a> object in the browser but can be replaced by pretty much anything. There
+					are two (2) methods that must be implemented: stringify and parse. This can be used to have a transparent
+				encryption layer for the stored values or whatever.   </p>
+				<h2 id="testing">Testing</h2>
+				<p>Testability was the reason this library was built in the first place. Not only is testing the library
+					itself easy because of its modularity, testing an application that uses the library is just as simple.
+				Here&#39;s an example using Jasmine:</p>
+				<pre><code class="lang-typescript">describe(<span class="hljs-string">"My test suite"</span>, ()=&gt;{
+
+    beforeEach(()=&gt;{
+        TestBed.configureTestingModule({
+            providers:[
+                {provide: LOCAL_STORAGE_OBJECT, useValue: {<span class="hljs-string">"myVariable"</span>: <span class="hljs-string">"something"</span>}},
+                LocalStorage,
+                MyClass
+            ]
+        })
+    })
+    it(<span class="hljs-string">"should set myVariable"</span>, inject([MyClass, LocalStorage],(sut: MyClass, ls: LocalStorage)=&gt;{
+        expect(ls[<span class="hljs-string">"myVariable"</span>]).toBe(<span class="hljs-string">'something'</span>);
+        sut.doSomething();
+        expect(ls[<span class="hljs-string">"myVariable"</span>]).toBe(<span class="hljs-string">'something else'</span>);
+    }); 
+});
+</code></pre>
+				<p>With the example above, you can verify that the logic of the class places the correct value in storage
+				or performs the correct actions based on what it finds in storage.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-is-not-exported">
+						<a href="enums/keydirection.html" class="tsd-kind-icon">Key<wbr>Direction</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/basestorage.html" class="tsd-kind-icon">Base<wbr>Storage</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/localstorage.html" class="tsd-kind-icon">Local<wbr>Storage</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/sessionstorage.html" class="tsd-kind-icon">Session<wbr>Storage</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/webstoragemodule.html" class="tsd-kind-icon">Web<wbr>Storage<wbr>Module</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/storageoptions.html" class="tsd-kind-icon">Storage<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#browser_storage_providers" class="tsd-kind-icon">BROWSER_<wbr>STORAGE_<wbr>PROVIDERS</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#local_storage_object" class="tsd-kind-icon">LOCAL_<wbr>STORAGE_<wbr>OBJECT</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#serdes_object" class="tsd-kind-icon">SERDES_<wbr>OBJECT</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#session_storage_object" class="tsd-kind-icon">SESSION_<wbr>STORAGE_<wbr>OBJECT</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#storage_options" class="tsd-kind-icon">STORAGE_<wbr>OPTIONS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#storagetype" class="tsd-kind-icon">storage<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#configurestorage" class="tsd-kind-icon">Configure<wbr>Storage</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#storageproperty" class="tsd-kind-icon">Storage<wbr>Property</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#createbacking" class="tsd-kind-icon">create<wbr>Backing</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#storagefactory" class="tsd-kind-icon">storage<wbr>Factory</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
