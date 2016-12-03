@@ -29,7 +29,7 @@
 4. Inject the service into your class and use:
 
   ```typescript
-	import {LocalStorage} from 'h5webstorage';
+	import {LocalStorage, StorageProperty} from 'h5webstorage';
 	@Component({})
 	class MyComponent{
 		@StorageProperty() public SomeValue: string = null;	//This will expose a specific value in localStorage as property of this class
