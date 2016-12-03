@@ -3,6 +3,8 @@ node_js:
   - "6"
 addons:
   sauce_connect: true
+  jwt:
+    - secure: "DjUXbedmdBpVMtT5gSBkRJEn+kZnvRKiIqSmDdTSybixoze5Lc96XZTKhLAMtPVuKFSS6/AkYLinxt4pWLGYiG50Egnbl0qggnDcc57iCA+YsKr6TDvbWV6P589jngVLZpWz9tarzSp+WCkt+JUv2Wmo9/yH1rcewuDfbNDZoZk="
 after_script:
   - codeclimate-test-reporter < dist/coverage/lcov.info
 before_deploy:
