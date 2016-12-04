@@ -91,6 +91,40 @@ module.exports = function (config) {
 			browserName: "microsoftedge",
 			version: "13",
 			platform: 'Windows 10'
+		},
+		SL_Safari_Prime:{
+			base: "SauceLabs",
+			browserName: "safari",
+			version: "10.0",
+			platform: "OS X 10.11"
+		},
+		SL_Safari_Mezzo:{
+			base: "SauceLabs",
+			browserName: "safari",
+			version: "9.0",
+			platform: "OS X 10.11"
+		},
+		SL_Safari_Mezzo:{
+			base: "SauceLabs",
+			browserName: "safari",
+			version: "8.0",
+			platform: "OS X 10.10"
+		},
+		SL_iOS_Safari_Prime:{
+			base: "SauceLabs",
+			browserName: "Safari",
+			platformName: "iOS",
+			platformVersion: "10.0",
+			deviceName: "iPhone Simulator",
+			appiumVersion: "1.6.1"
+		},
+		SL_iOS_Safari_Omega:{
+			base: "SauceLabs",
+			browserName: "Safari",
+			platformName: "iOS",
+			platformVersion: "9.3",
+			deviceName: "iPhone Simulator",
+			appiumVersion: "1.6.1"
 		}
 	};
 	config.browsers = Object.keys(config.customLaunchers);
