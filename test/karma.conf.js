@@ -131,6 +131,7 @@ module.exports = function (config) {
     concurrency: 5,
 
     browserNoActivityTimeout: 120000,
+    captureTimeout: 120000
   });
 
   var args = process.argv.slice(2);
