@@ -110,7 +110,7 @@ module.exports = function (config) {
 			version: "8.0",
 			platform: "OS X 10.10"
 		},
-		SL_iOS_Safari_Prime:{
+		/*SL_iOS_Safari_Prime:{
 			base: "SauceLabs",
 			browserName: "Safari",
 			platformName: "iOS",
@@ -125,7 +125,7 @@ module.exports = function (config) {
 			platformVersion: "9.3",
 			deviceName: "iPhone Simulator",
 			appiumVersion: "1.6.1"
-		}
+		}*/
 	};
 	config.browsers = Object.keys(config.customLaunchers);
 	config.reporters.push("saucelabs");
