@@ -71,6 +71,8 @@ export class MockObject {
 	public SessionKey;
 	public NewProperty = "default value";
 	public NewerProperty = "another default value";
+	public _b: boolean;
+	public _c: boolean = true;
 
 	constructor(private storage: Storage) {
 

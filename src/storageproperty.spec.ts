@@ -129,6 +129,7 @@ storageType.forEach((type) => {
 			let decorator = StorageProperty(null, type == "local" ? "Session" : "Local");
 			let prefix = type == "local" ? "Session" : "Local";
 			decorator(mockObject, "TestProperty")
+			mockStorage.detectChanges();
 			expect(() => mockObject.TestProperty).toThrowError("Object must have a property that is an instance of " + prefix + "Storage.");
 		});
 
@@ -136,8 +137,29 @@ storageType.forEach((type) => {
 			mockObject = new MockObject(mockStorage);
 			let decorator = StorageProperty({ readOnly: true });
 			decorator(mockObject, "TestProperty");
+			mockStorage.detectChanges();
 			expect(() => mockObject.TestProperty = "disallowed action").toThrow();
 		});
 
+		it("should set 'undefined' in " + type + "Storage when property matches backing variable name", () => {
+			let decorator = StorageProperty("b", type == "local" ? "Local" : "Session");
+
+			expect(mockStore["b"]).not.toBeDefined();
+			decorator(MockObject.prototype, "_b");
+			mockObject = new MockObject(mockStorage);
+			mockStorage.detectChanges();
+			expect(mockStore["b"]).toBeUndefined();
+		});
+
+		it("should set default value in " + type + "Storage when property matches backing variable name", () => {
+			let decorator = StorageProperty("c", type == "local" ? "Local" : "Session");
+
+			expect(mockStore["c"]).not.toBeDefined();
+			decorator(MockObject.prototype, "_c");
+			mockObject = new MockObject(mockStorage);
+			mockStorage.detectChanges();
+			let actual = transformer.stringify(true);
+			expect(mockStore["c"]).toBe(actual);
+		});
 	});
 })
