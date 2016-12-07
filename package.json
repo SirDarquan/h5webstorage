@@ -1,6 +1,6 @@
 {
   "name": "h5webstorage",
-  "version": "0.6.2",
+  "version": "0.6.4",
   "description": "HTML5 WebStorage API for angular2",
   "scripts": {
     "compile": "tsc",
