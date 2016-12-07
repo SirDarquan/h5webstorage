@@ -7,9 +7,10 @@ var packageVersion = require(path.resolve(rootDir, "package.json")).version;
 
 
 
-function createNpmIgnore(path, content){
-	fs.writeFile(path.resolve(path, ".npmignore"), content.join('\n'));
+function createNpmIgnore(filePath, content){
+	fs.writeFile(path.resolve(filePath, ".npmignore"), content.join('\n'));
 }
+
 function copyFile(source, target) {
     return new Promise(function(resolve, reject) {
         var rd = fs.createReadStream(source);
