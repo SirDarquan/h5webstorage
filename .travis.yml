@@ -7,13 +7,9 @@ addons:
     secure: "PlXmfjTV8GneIRsKDjClP2q92AZh49CMx3j2Sa8BjWX0yDPwWIDJ2hwpzdXIEN4zLr2ZNmpi5U8pMd4IJNHpdEKfv6PJcfm0TEfmbo/MBu0WcytF4RsrndNBJRyJxdMD/3kG2R5OhOcpjbve6KIVn2wdv+7IGfzANQEypbVYUEB/ttIXOon9Jo7jpG0rd7BM7RHf8ebgGE5X3IrATqGoNUExV8SdFf+BeITS7/jAggwbqgE+F6c9TwN6+Dz3dzBbJC5X15m85KBnz4XQnZljB1mVWDxQY0UtgSAyJhhyObVK0Slcz8Fw/MDpzKeAt1xiA4cbW2InPvGb5ea8wMAbv0mfYiPgFYHBOZ00MEUBF+fhrPI2iTFErwSvk+4EReImQMPXpenMgRbArjdO2WMYK4BxcQifRw/Cgkp3DuqnZU3Bg/atI2zHEsZ5YlVeG9P7VpKeJJC+ui7+EZNgIL9tisv6rmtdQigwf2g9Avd/R3f+vXwEoiCoILdpCNhuc65IibIXgcXkwCKKG1EBXDz+qSOHbLENhLjmHtr3u6fzzdhWuhOTSCZPdfoKuAN2CY2vq2+yIoEs4z0XLlO/cDKyQ2v5dpWgePiBJuLAPkjJaO/dI+i3Bg9sDTIHWxLihcUkRgmPCxNk1Hihu4JtQ1iSKS6BCdEYRhQDWTDILFYvt5k="
 after_script:
   - codeclimate-test-reporter < dist/coverage/lcov.info
-before_deploy:
-  - node tools/setupDeploy
-after_deploy:
-  - tools/deploy-docs.sh
 deploy:
   provider: script
-  script: npm publish dist/src 
+  script: tools/deployment.sh 
   skip_cleanup: true
   on:
     tags: true

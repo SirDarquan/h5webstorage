@@ -1,6 +1,21 @@
 #!/bin/bash
 set -e # Exit with nonzero exit code if anything fails
 
+node ./tools/setupDeploy 
+
+if [[ $TRAVIS_TAG ~= [0-9]+\.[0-9]+\.[0-9]+(-([a-z]+)\.[0-9]+)? ]];
+then
+    $tabLabel=$BASH_REMATCH[2];
+fi
+
+case $tagLabel in
+"beta") TAG_TYPE="beta" ;;
+"rc") TAG_TYPE="release candidate" ;;
+) TAG_TYPE="latest" ;;
+esac
+
+npm publish ./dist/src --tag $TAG_TYPE
+
 TARGET_BRANCH="gh-pages"
 
 # Save some useful information
