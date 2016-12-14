@@ -11,7 +11,7 @@ fi
 case $tagLabel in
 "beta") TAG_TYPE="beta" ;;
 "rc") TAG_TYPE="release candidate" ;;
-) TAG_TYPE="latest" ;;
+*) TAG_TYPE="latest" ;;
 esac
 
 npm publish ./dist/src --tag $TAG_TYPE
