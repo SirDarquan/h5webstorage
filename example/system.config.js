@@ -1,6 +1,7 @@
 var packages = {
 	'example': { main: 'index.js', defaultExtension: 'js' },
 	'rxjs': { defaultExtension: 'js' },
+	'h5webstorage':{main: 'index.js', defaultExtension: 'js'}
 };
 var packageNames = [
 	'@angular/common',
@@ -25,7 +26,8 @@ System.config({
 	map: {
 		"@angular": "../node_modules/@angular",
 		"rxjs": "../node_modules/rxjs",
-		"example": "../../dist/example"
+		"example": "../../dist/example",
+		"h5webstorage": "../dist/src"
 	},
 	packages: packages
 });
