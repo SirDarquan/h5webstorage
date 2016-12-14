@@ -1,5 +1,5 @@
 import {Component, Input} from "@angular/core";
-import {LocalStorage, StorageProperty} from "../../src/index";
+import {LocalStorage, StorageProperty} from "h5webstorage";
 import {TodoItem, TodoItemModel} from "./todoItem";
 import {CreateItem} from "./createItem";
 

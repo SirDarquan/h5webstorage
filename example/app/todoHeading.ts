@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, ViewChildren, QueryList, AfterViewInit, Input } from "@angular/core";
 import { NgModel } from "@angular/forms";
-import { LocalStorage, ConfigureStorage } from "../../src/index";
+import { LocalStorage, ConfigureStorage } from "h5webstorage";
 
 @Component({
 	selector: "todo-heading",

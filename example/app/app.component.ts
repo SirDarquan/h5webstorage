@@ -3,7 +3,7 @@ import { NgClass} from "@angular/common";
 import {TodoList} from "./todoList";
 import {TodoItemModel} from "./todoItem";
 import {TodoHeading} from "./todoHeading";
-import {LocalStorage, StorageProperty} from "../../src/index";
+import {LocalStorage, StorageProperty} from "h5webstorage";
 import {JsonPipe} from "./JsonPipe";
 
 @Component({
