@@ -1,18 +1,19 @@
 #!/bin/bash
 set -e # Exit with nonzero exit code if anything fails
-
-node ./tools/setupDeploy.js 
-
+echo "Using tag $TRAVIS_TAG to determine channel...";
 if [[ $TRAVIS_TAG =~ [0-9]+\.[0-9]+\.[0-9]+(-([a-z]+)\.[0-9]+)? ]];
 then
-    tabLabel=${BASH_REMATCH[2]};
+    tagLabel=${BASH_REMATCH[2]};
 fi
+
+echo "Release type is '$tagLabel'"
 
 case $tagLabel in
 "beta") TAG_TYPE="beta" ;;
 "rc") TAG_TYPE="release candidate" ;;
 *) TAG_TYPE="latest" ;;
 esac
+echo "Release channel will be '$TAG_TYPE'";
 
 npm publish ./dist/src --tag $TAG_TYPE
 
