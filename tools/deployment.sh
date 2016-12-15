@@ -3,9 +3,9 @@ set -e # Exit with nonzero exit code if anything fails
 
 node ./tools/setupDeploy.js 
 
-if [[ $TRAVIS_TAG ~= [0-9]+\.[0-9]+\.[0-9]+(-([a-z]+)\.[0-9]+)? ]];
+if [[ $TRAVIS_TAG =~ [0-9]+\.[0-9]+\.[0-9]+(-([a-z]+)\.[0-9]+)? ]];
 then
-    $tabLabel=$BASH_REMATCH[2];
+    tabLabel=${BASH_REMATCH[2]};
 fi
 
 case $tagLabel in
