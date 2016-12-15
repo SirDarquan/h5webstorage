@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e # Exit with nonzero exit code if anything fails
+set -ev # Exit with nonzero exit code if anything fails
 echo "Using tag $TRAVIS_TAG to determine channel...";
 if [[ $TRAVIS_TAG =~ [0-9]+\.[0-9]+\.[0-9]+(-([a-z]+)\.[0-9]+)? ]];
 then
