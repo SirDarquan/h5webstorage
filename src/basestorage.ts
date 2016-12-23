@@ -139,9 +139,9 @@ export abstract class BaseStorage implements OnDestroy, Storage {
 			var storage = this.getProperty<Storage>("storage");
 			var prevStorage = this.deserialize(prevValue);
 			Object.keys(this).forEach((key) => {
-				var _key = this.normalizeStorageKey(key, KeyDirection.To);
-				var value = this[key];
-				if (typeof this[key] != "undefined") {
+				if (this[key] != null) {
+					var _key = this.normalizeStorageKey(key, KeyDirection.To);
+					var value = this[key];
 					storage.setItem(_key, this.serialize(this[key]));
 					delete prevStorage[key];
 				}
