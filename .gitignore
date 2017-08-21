@@ -2,3 +2,5 @@ node_modules
 typings
 dist
 sc_karma*.log
+out-tsc
+coverage
