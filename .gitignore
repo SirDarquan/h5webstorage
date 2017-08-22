@@ -4,3 +4,4 @@ dist
 sc_karma*.log
 out-tsc
 coverage
+documentation

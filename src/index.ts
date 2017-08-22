@@ -1,7 +1,7 @@
 import { NgModule, Provider } from '@angular/core';
-import { StorageOptions, STORAGE_OPTIONS, SERDES_OBJECT } from "./basestorage";
-import { LocalStorage, LOCAL_STORAGE_OBJECT } from "./localstorage";
-import { SessionStorage, SESSION_STORAGE_OBJECT } from "./sessionstorage";
+import { StorageOptions, STORAGE_OPTIONS, SERDES_OBJECT } from './basestorage';
+import { LocalStorage, LOCAL_STORAGE_OBJECT } from './localstorage';
+import { SessionStorage, SESSION_STORAGE_OBJECT } from './sessionstorage';
 
 /**
  * Makes the  LocalStorage and SessionStorage objects available throught the application. Should be
@@ -19,11 +19,11 @@ export let BROWSER_STORAGE_PROVIDERS: Provider[] = [
 	{ provide: LOCAL_STORAGE_OBJECT, useValue: localStorage },
 	{ provide: SESSION_STORAGE_OBJECT, useValue: sessionStorage },
 	{ provide: SERDES_OBJECT, useValue: { stringify: JSON.stringify, parse: JSON.parse } },
-	ConfigureStorage({prefix: ""})
+	ConfigureStorage({prefix: ''})
 ];
 
 export { LocalStorage, SessionStorage };
-export { StorageProperty } from "./storageproperty";
+export { StorageProperty } from './storageproperty';
 /**
  * Creates a provider for the StorageOptions
  * @param options - A {@link StorageOptions} object

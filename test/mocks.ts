@@ -1,5 +1,5 @@
-import { Injectable, NgZone, EventEmitter } from "@angular/core";
-import { BaseStorage, StorageOptions } from "../src/basestorage";
+import { Injectable, NgZone, EventEmitter } from '@angular/core';
+import { BaseStorage, StorageOptions } from '../src/basestorage';
 
 
 export class MockStore implements Storage {
@@ -43,25 +43,26 @@ export class MockOptions implements StorageOptions {
 }
 
 export class MockSerdes implements JSON {
+	readonly [Symbol.toStringTag]: 'JSON';
 	stringify = (...args): string => JSON.stringify.apply(null, args);
-	parse = (...args): any => JSON.parse.apply(null, args)
+	parse = (...args): any => JSON.parse.apply(null, args);
 }
 
 @Injectable()
 export class MockStorage extends BaseStorage {
 	constructor(ngZone: NgZone, store: MockStore, transformer: MockSerdes, options: MockOptions) {
 		super(ngZone, store, transformer, options);
-		//we don't use private ngZone because that will add an extra key in the class
-		this.setProperty("zone", ngZone);
+		// we don't use private ngZone because that will add an extra key in the class
+		this.setProperty('zone', ngZone);
 	}
 
 	detectChanges() {
-		this.getProperty<NgZone>("zone").run(() => { });
+		this.getProperty<NgZone>('zone').run(() => { });
 		return this;
 	}
 
 	createStorageEvent() {
-		this.setProperty("fromStorage", true);
+		this.setProperty('fromStorage', true);
 		return this;
 	}
 }
@@ -69,10 +70,10 @@ export class MockStorage extends BaseStorage {
 export class MockObject {
 	public TestProperty;
 	public SessionKey;
-	public NewProperty = "default value";
-	public NewerProperty = "another default value";
+	public NewProperty = 'default value';
+	public NewerProperty = 'another default value';
 	public _b: boolean;
-	public _c: boolean = true;
+	public _c = true;
 
 	constructor(private storage: Storage) {
 

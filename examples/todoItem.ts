@@ -1,11 +1,11 @@
-import {Component, Input, Output, EventEmitter, ViewChild, AfterViewInit, HostBinding} from "@angular/core";
-import {NgModel} from "@angular/forms";
+import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit, HostBinding } from '@angular/core';
+import { NgModel } from '@angular/forms';
 
 @Component({
-	selector: "todo-item",
-	template: 
+	selector: 'todo-item',
+	template:
 	`
-		<template [ngIf]="!isEditing">
+		<ng-template [ngIf]="!isEditing">
 			<div class="item-status"><input type="checkbox" [(ngModel)]="data.completed"/></div>
 			<div class="item-info">
 				<h3>{{data.name}}</h3>
@@ -15,67 +15,66 @@ import {NgModel} from "@angular/forms";
 				<i class="material-icons md-48" (click)="editItem()">edit</i>
 				<i class="material-icons md-48" (click)="removeItem()">clear</i>
 			</div>
-		</template>
-		<template [ngIf]="isEditing">
+		</ng-template>
+		<ng-template [ngIf]="isEditing">
 			<label>Name</label> <input type="text" [(ngModel)]="data.name" class="form-control"/>
 			<label>Description</label> <textarea [(ngModel)]="data.description" class="form-control"></textarea>
 			<div>
 				<button (click)="switchMode(true)">Update</button>
 				<button (click)="switchMode(false)">Cancel</button>
 			</div>
-		</template>	
+		</ng-template>	
 	`
 })
-export class TodoItem implements AfterViewInit{
+export class TodoItem implements AfterViewInit {
 	@Input() data: TodoItemModel;
 	@Output() changed: any = new EventEmitter<TodoItemModel>();
 	@Output() removed: any = new EventEmitter<TodoItemModel>();
 	@Output() selected: any = new EventEmitter<TodoItemModel>();
 	@ViewChild(NgModel) ngModel: NgModel;
-	@HostBinding("class.completed") test;
-	@HostBinding("class.editing") isEditing: boolean = false;
+	@HostBinding('class.completed') test;
+	@HostBinding('class.editing') isEditing = false;
 	private oldValue = {};
-	
-	constructor(){
+
+	constructor() {
 
 	}
-	
-	ngAfterViewInit(){
-		this.ngModel.update.subscribe(()=>{
+
+	ngAfterViewInit() {
+		this.ngModel.update.subscribe(() => {
 			this.data.modified = Date.now();
 			this.test = this.data.completed;
-			this.changed.emit(this.data);			
+			this.changed.emit(this.data);
 		});
-		setTimeout(()=> this.test = this.data.completed, 0);
+		setTimeout(() => this.test = this.data.completed, 0);
 	}
-	
-	removeItem(){
+
+	removeItem() {
 		this.removed.emit(this.data);
 	}
-	
-	editItem(){
+
+	editItem() {
 		this.isEditing = true;
 		Object.assign(this.oldValue, this.data);
 	}
-	
-	switchMode(updateItem){
+
+	switchMode(updateItem) {
 		this.isEditing = false;
-		if(updateItem){
+		if (updateItem) {
 			this.data.modified = Date.now();
-			 this.changed.emit(this.data);
-		}
-		else{
-			 Object.assign(this.data, this.oldValue);
-			 this.oldValue = {};
+			this.changed.emit(this.data);
+		} else {
+			Object.assign(this.data, this.oldValue);
+			this.oldValue = {};
 		}
 	}
 }
 
-export interface TodoItemModel{
-	id: string,
-	name: string,
-	description: string,
-	completed: boolean,
-	created: number,
-	modified: number
+export interface TodoItemModel {
+	id: string;
+	name: string;
+	description: string;
+	completed: boolean;
+	created: number;
+	modified: number;
 }

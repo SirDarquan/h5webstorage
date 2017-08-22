@@ -1,4 +1,3 @@
-import {stringify} from '@angular/core/src/facade/lang';
 import {Injectable, PipeTransform, WrappedValue, Pipe} from '@angular/core';
 
 /**
@@ -10,5 +9,5 @@ import {Injectable, PipeTransform, WrappedValue, Pipe} from '@angular/core';
 @Pipe({name: 'json', pure: false})
 @Injectable()
 export class JsonPipe implements PipeTransform {
-  transform(value: any, args: any[] = []): string { args.unshift(value); return stringify.call(this, args); }
+  transform(value: any, args: any[] = []): string { args.unshift(value); return JSON.stringify.call(this, args); }
 }
