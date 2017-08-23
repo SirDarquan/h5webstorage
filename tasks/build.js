@@ -14,7 +14,9 @@ const colorize = librarianUtils.colorize;
 const rootDir = path.resolve(__dirname, '..');
 const buildDir = path.resolve(rootDir, 'build');
 const distDir = path.resolve(rootDir, 'dist');
-const libName = require(path.resolve(rootDir, 'package.json')).name;
+//const libName = require(path.resolve(rootDir, 'package.json')).name;
+const packageDef = require(path.resolve(rootDir, 'package.json'));
+const libName = packageDef.name;
 const srcDir = path.resolve(rootDir, 'src');
 const tscDir = path.resolve(rootDir, 'out-tsc');
 const es5Dir = path.resolve(tscDir, 'lib-es5');
@@ -42,9 +44,12 @@ const copyMetadata = () =>
 const copyPackageFiles = () =>
     copyGlobs(['.npmignore', 'package.json', 'README.md'], rootDir, distDir)
         .then(() => {
-            const contents = fs.readFileSync(path.resolve(distDir, 'package.json'), 'utf8');
+            //const contents = fs.readFileSync(path.resolve(distDir, 'package.json'), 'utf8');
+            packageDef.peerDependencies = packageDef.dependencies;
+            delete packageDef.devDependencies;
+            delete packageDef.dependencies;
 
-            return fs.writeFileSync(path.resolve(distDir, 'package.json'),  contents.replace('"dependencies":', '"peerDependencies":'));
+            return fs.writeFileSync(path.resolve(distDir, 'package.json'),  JSON.stringify(packageDef,null,4));
         });
 const copySource = () => copyGlobs('**/*', srcDir, buildDir);
 const doInlining = () => inlineResources(buildDir, 'src');

@@ -85,7 +85,7 @@ enum KeyDirection {
  *
  * NOTE: BaseStorage is an abstract class but the documentation generator makes no distintion.
  */
-export abstract class BaseStorage implements OnDestroy, Storage {
+export abstract class BaseStorageService implements OnDestroy, Storage {
 
 	/**
 	 * Initializes the storage system by attaching to the angular2 change detection system and the Storage event system. Then

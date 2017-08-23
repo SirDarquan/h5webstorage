@@ -1,5 +1,5 @@
-import { LocalStorage } from './localstorage';
-import { SessionStorage } from './sessionstorage';
+import { LocalStorageService } from './local-storage.service';
+import { SessionStorageService } from './session-storage.service';
 
 /**
  * A decorator that associates a property with a key in storage
@@ -57,7 +57,7 @@ export function StorageProperty(...params: any[]) {
 		} else {
 			options = Object.assign({}, { storageKey: params[0] || decoratedPropertyName, storage: params[1] || 'Local', readOnly: false });
 		}
-		let storeObject: LocalStorage = null;
+		let storeObject: LocalStorageService = null;
 		const initializing: boolean = !options.readOnly;
 
 		/*in the current context, 'this' is the module containing the StorageProperty but what we
@@ -68,7 +68,7 @@ export function StorageProperty(...params: any[]) {
 		const findStore = function (obj: any) {
 			if (!storeObject) {
 				const storeKey = Object.keys(obj).find(function (key) {
-					return options.storage === 'Local' ? obj[key] instanceof LocalStorage : obj[key] instanceof SessionStorage;
+					return options.storage === 'Local' ? obj[key] instanceof LocalStorageService : obj[key] instanceof SessionStorageService;
 				});
 				// tslint:disable-next-line:no-unused-expression
 				storeKey && (storeObject = obj[storeKey]);

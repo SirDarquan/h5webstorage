@@ -1,5 +1,5 @@
 import { Inject, Injectable, Optional, OpaqueToken, NgZone } from '@angular/core';
-import { BaseStorage, StorageOptions, STORAGE_OPTIONS, SERDES_OBJECT } from './basestorage';
+import { BaseStorageService, StorageOptions, STORAGE_OPTIONS, SERDES_OBJECT } from './base-storage.service';
 
 /**
  * Token used to inject an object as the storage backend of the SessionStorage object. By default, the storage
@@ -13,7 +13,7 @@ export let LOCAL_STORAGE_OBJECT = new OpaqueToken('localstorage');
  * Can be injected into a component that needs access to localStorage.
  */
 @Injectable()
-export class LocalStorage extends BaseStorage {
+export class LocalStorageService extends BaseStorageService {
 	constructor(ngZone: NgZone,
 		@Inject(LOCAL_STORAGE_OBJECT) storage: Storage,
 		@Inject(SERDES_OBJECT) transformer: JSON,
