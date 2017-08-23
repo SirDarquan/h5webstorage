@@ -129,5 +129,10 @@ module.exports = function (config) {
 		}*/
 	};
 	config.browsers = Object.keys(config.customLaunchers);
-	config.reporters.push("saucelabs");
+	if(config.reporters){
+		config.reporters.push("saucelabs");
+	}
+	else{
+		config.reporters = ['saucelabs'];
+	}
 }
