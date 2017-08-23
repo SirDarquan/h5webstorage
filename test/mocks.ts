@@ -1,5 +1,5 @@
 import { Injectable, NgZone, EventEmitter } from '@angular/core';
-import { BaseStorage, StorageOptions } from '../src/basestorage';
+import { BaseStorageService, StorageOptions } from '../src/base-storage.service';
 
 
 export class MockStore implements Storage {
@@ -49,7 +49,7 @@ export class MockSerdes implements JSON {
 }
 
 @Injectable()
-export class MockStorage extends BaseStorage {
+export class MockStorage extends BaseStorageService {
 	constructor(ngZone: NgZone, store: MockStore, transformer: MockSerdes, options: MockOptions) {
 		super(ngZone, store, transformer, options);
 		// we don't use private ngZone because that will add an extra key in the class

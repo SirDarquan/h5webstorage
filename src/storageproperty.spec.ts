@@ -2,9 +2,9 @@ import { NgZone } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import { MockObject, MockStorage, MockStore, MockOptions, MockSerdes } from '../test/mocks';
-import { LocalStorage, LOCAL_STORAGE_OBJECT } from './localstorage';
-import { SessionStorage, SESSION_STORAGE_OBJECT } from './sessionstorage';
-import { StorageProperty } from './storageproperty';
+import { LocalStorageService, LOCAL_STORAGE_OBJECT } from './local-storage.service';
+import { SessionStorageService, SESSION_STORAGE_OBJECT } from './session-storage.service';
+import { StorageProperty } from './storage-property';
 
 
 function createBacking(type: string) {
@@ -29,8 +29,8 @@ function createBacking(type: string) {
 
 function storageFactory(type: string) {
 	return (ngZone: NgZone, store: MockStore, transformer: MockSerdes, options: MockOptions): Storage => {
-		const storage = type === 'local' ? new LocalStorage(ngZone, store, transformer, options)
-			: new SessionStorage(ngZone, store, transformer, options);
+		const storage = type === 'local' ? new LocalStorageService(ngZone, store, transformer, options)
+			: new SessionStorageService(ngZone, store, transformer, options);
 		(<any>storage).detectChanges = () => ngZone.run(() => { });
 		return storage;
 	};
