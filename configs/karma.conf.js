@@ -23,7 +23,7 @@ module.exports = function (config) {
   };
   var args = process.argv.slice(2);
   var usingSauceLabs = process.env.TRAVIS || args.some(function (value) {
-    return value.match(/--sauce-creds/i);
+    return value.match(/sauce-creds/i);
   });
 
   if (usingSauceLabs) {

@@ -14,12 +14,12 @@ module.exports = function (config) {
 		var fs = require("fs");
 		var args = process.argv.slice(2);
 		var credsFileArg = args.find(function (value) {
-			return value.match(/--sauce-creds=.+/i);
+			return value.match(/sauce-creds=.+/i);
 		});
 		if (!credsFileArg) {
 			throw new Error("SauceLabs credentials must supplied when testing locally.");
 		}
-		var credsFile = credsFileArg.match(/--sauce-creds=(.+)/i)[1];
+		var credsFile = credsFileArg.match(/sauce-creds=(.+)/i)[1];
 		console.log("credsFile", credsFile);
 		var sauceCreds = null;
 		try {
