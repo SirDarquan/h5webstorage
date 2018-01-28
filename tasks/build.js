@@ -11,12 +11,11 @@ const inlineResources = require('./inline-resources');
 const rollup = require('./rollup');
 
 const colorize = librarianUtils.colorize;
+const execute = librarianUtils.execute;
 const rootDir = path.resolve(__dirname, '..');
 const buildDir = path.resolve(rootDir, 'build');
 const distDir = path.resolve(rootDir, 'dist');
-//const libName = require(path.resolve(rootDir, 'package.json')).name;
-const packageDef = require(path.resolve(rootDir, 'package.json'));
-const libName = packageDef.name;
+const libName = require(path.resolve(rootDir, 'package.json')).name;
 const srcDir = path.resolve(rootDir, 'src');
 const tscDir = path.resolve(rootDir, 'out-tsc');
 const es5Dir = path.resolve(tscDir, 'lib-es5');
@@ -33,23 +32,48 @@ const complete = (depth = 0) => {
     const spaces = ' '.repeat(depth);
     console.info(colorize.colorize(`${ spaces }> Complete`, 'green'));
 };
-const compileCode = () => Promise.all([2015, 5].map((type) =>
-    ngc({ project: path.resolve(rootDir, `tsconfig.es${ type }.json`)})
-        .then((exitCode) =>
-            exitCode === 0 ? Promise.resolve() : Promise.reject()
+const evaluateExitCode = (exitCode) => {
+    return exitCode === 0 ? Promise.resolve() : Promise.reject();
+};
+const getAngularCompilerVersion = () => {
+    const npm = /^win/.test(process.platform) ? 'npm.cmd' : 'npm';
+    const lines = execute.execute(npm, ['list', '--depth=0', '@angular/compiler']).split(/\r?\n/);
+    const compilerLine = lines.find((line) => line.indexOf('@angular/compiler@') !== -1);
+    let version;
+
+    if (compilerLine) {
+        version = compilerLine.match(/\bangular\/compiler@[^\s]+\s?/) || [''];
+        version = version[0].trim().replace('angular/compiler@', '');
+    }
+
+    if (!version || version === '(empty)') {
+        Promise.reject('Angular Compiler is not installed!');
+    }
+
+    return version;
+};
+const compileCode = () => Promise.all([2015, 5].map((type) => {
+    const compilerVersion = getAngularCompilerVersion();
+    const majorCompilerVersion = +compilerVersion.split('.')[0];
+
+    if (majorCompilerVersion >= 5) {
+        const exitCode = ngc(['--project', path.resolve(rootDir, `tsconfig.es${ type }.json`)]);
+        return evaluateExitCode(exitCode);
+    } else {
+        ngc({ project: path.resolve(rootDir, `tsconfig.es${ type }.json`)})
+            .then((exitCode) => 
+            evaluateExitCode(exitCode)
         )
-));
+    }
+}));
 const copyMetadata = () =>
     copyGlobs(['**/*.d.ts', '**/*.metadata.json'], es2015Dir, distDir);
 const copyPackageFiles = () =>
     copyGlobs(['.npmignore', 'package.json', 'README.md'], rootDir, distDir)
         .then(() => {
-            //const contents = fs.readFileSync(path.resolve(distDir, 'package.json'), 'utf8');
-            packageDef.peerDependencies = packageDef.dependencies;
-            delete packageDef.devDependencies;
-            delete packageDef.dependencies;
+            const contents = fs.readFileSync(path.resolve(distDir, 'package.json'), 'utf8');
 
-            return fs.writeFileSync(path.resolve(distDir, 'package.json'),  JSON.stringify(packageDef,null,4));
+            return fs.writeFileSync(path.resolve(distDir, 'package.json'),  contents.replace('"dependencies":', '"peerDependencies":'));
         });
 const copySource = () => copyGlobs('**/*', srcDir, buildDir);
 const doInlining = () => inlineResources(buildDir, 'src');

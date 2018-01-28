@@ -11,19 +11,19 @@ import { CreateItem } from './createItem';
 import { WebStorageModule } from '../index';
 
 @NgModule({
-    declarations: [
-        TodoApp,
-        TodoHeading,
-        TodoItem,
-        TodoList,
-        CreateItem
-    ],
-    imports: [
-        BrowserModule,
-        CommonModule,
-        FormsModule,
-        WebStorageModule.forRoot()
-    ],
-    bootstrap: [TodoApp]
+	declarations: [
+		TodoApp,
+		TodoHeading,
+		TodoItem,
+		TodoList,
+		CreateItem
+	],
+	imports: [
+		BrowserModule,
+		CommonModule,
+		FormsModule,
+		WebStorageModule.forRoot()
+	],
+	bootstrap: [TodoApp]
 })
 export class ExampleModule { }

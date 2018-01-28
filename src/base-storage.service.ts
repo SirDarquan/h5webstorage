@@ -1,9 +1,9 @@
-import { EventEmitter, NgZone, OnDestroy, OpaqueToken } from '@angular/core';
+import { EventEmitter, NgZone, OnDestroy, InjectionToken } from '@angular/core';
 /**
  * The token used to allow injection of the {@link StorageOptions} interface. For more information visit the
  * {@link https://angular.io/docs/ts/latest/guide/dependency-injection.html#interface angular2 docs}.
  */
-export let STORAGE_OPTIONS = new OpaqueToken('StorageOptions');
+export let STORAGE_OPTIONS = new InjectionToken('StorageOptions');
 
 /**
  * An object that SERializes and DESeriallizes values for storage. The default implementation for the SerDes object is:
@@ -16,7 +16,7 @@ export let STORAGE_OPTIONS = new OpaqueToken('StorageOptions');
  * Should you want to implement customized serialization and deserialization for something like encrypted storage, simply
  * provide new methods for stringify and parse and you're good to go.
  */
-export let SERDES_OBJECT = new OpaqueToken('SerdesObject');
+export let SERDES_OBJECT = new InjectionToken('SerdesObject');
 
 /**
  * Defines options used by the storage classes to determine how they will interact. This will be injected into any Storage classes
@@ -118,6 +118,95 @@ export abstract class BaseStorageService implements OnDestroy, Storage {
 		this.setProperty('listener', listener);
 	}
 
+	ngOnDestroy() {
+		this.getProperty<EventEmitter<any>>('subscription').unsubscribe();
+		const listener = this.getProperty<any>('listener');
+		window.removeEventListener('storage', listener);
+	}
+
+	/**
+	 * Retrieves data stored is storage.
+	 * @param key - The identifier used to locate data in storage.
+	 */
+	getItem(key: string): string {
+		return this[key];
+	}
+
+	/**
+	 * Stores data in storage
+	 * @param key - The identifier to associate stored data with
+	 * @param value - The data to place in storage
+	 */
+	setItem(key: string, value: string) {
+		try {
+			// since the value of set item has to be a string, the value may already be stringified Json.
+			// so we parse it to allow the WriteToStorage function to properly stringify object values.
+			this[key] = this.deserialize(value);
+		} catch (e) {
+			this[key] = value;
+		}
+	}
+
+	/**
+	 * Deletes data stored in storage
+	 * @param key - The identifier used to locate the data to be deleted
+	 */
+	removeItem(key: string) {
+		delete this[key];
+	}
+
+	/**
+	 * Removes all keys managed by the storage object.
+	 */
+	clear() {
+		Object.keys(this).forEach((key) => {
+			delete this[key];
+		});
+	}
+
+	/**
+	 * Retrieves an identifier
+	 * @param index - The position at which to look for an identifier. Index be at least zero
+	 * and must be less than length.
+	 */
+	key(index: number): string {
+		return Object.keys(this)[index];
+	}
+
+	/**
+	 * The number of values this instance is managing
+	 */
+	get length() {
+		return Object.keys(this).length;
+	}
+
+	/**
+	 * Gets or set a value from storage. Unlike getItem and setItem, the value is not required
+	 * to be a string. All values will be serialized to string prior to being stored. To
+	 * specify serialization, {@link StorageOptions#transformer}
+	 */
+	[key: string]: any;
+
+		/**
+	 * Retrieves data from the object stored as a property.
+	 */
+	protected getProperty<T>(name: string): T {
+		return name in this ? this[name] : undefined;
+	}
+
+	/**
+	 * Stores data in a private private property that will not be stored in storage.
+	 * This is necessary because creating a class property results in an extra key in
+	 * storage.
+	 */
+	protected setProperty(name: string, value: any) {
+		if (!(name in this)) {
+			Object.defineProperty(this, name, { writable: true });
+		}
+		this[name] = value;
+	}
+
+
 	private normalizeStorageKey(name: string, dir: KeyDirection): string {
 		const options = this.getProperty<StorageOptions>('options');
 		return dir === KeyDirection.From ? name.replace(options.prefix, '') : options.prefix + name;
@@ -188,91 +277,4 @@ export abstract class BaseStorageService implements OnDestroy, Storage {
 		this.setProperty('fromStorage', false);
 	}
 
-	ngOnDestroy() {
-		this.getProperty<EventEmitter<any>>('subscription').unsubscribe();
-		const listener = this.getProperty<any>('listener');
-		window.removeEventListener('storage', listener);
-	}
-
-	/**
-	 * Retrieves data from the object stored as a property.
-	 */
-	protected getProperty<T>(name: string): T {
-		return name in this ? this[name] : undefined;
-	}
-
-	/**
-	 * Stores data in a private private property that will not be stored in storage.
-	 * This is necessary because creating a class property results in an extra key in
-	 * storage.
-	 */
-	protected setProperty(name: string, value: any) {
-		if (!(name in this)) {
-			Object.defineProperty(this, name, { writable: true });
-		}
-		this[name] = value;
-	}
-
-	/**
-	 * Retrieves data stored is storage.
-	 * @param key - The identifier used to locate data in storage.
-	 */
-	getItem(key: string): string {
-		return this[key];
-	}
-
-	/**
-	 * Stores data in storage
-	 * @param key - The identifier to associate stored data with
-	 * @param value - The data to place in storage
-	 */
-	setItem(key: string, value: string) {
-		try {
-			// since the value of set item has to be a string, the value may already be stringified Json.
-			// so we parse it to allow the WriteToStorage function to properly stringify object values.
-			this[key] = this.deserialize(value);
-		} catch (e) {
-			this[key] = value;
-		}
-	}
-
-	/**
-	 * Deletes data stored in storage
-	 * @param key - The identifier used to locate the data to be deleted
-	 */
-	removeItem(key: string) {
-		delete this[key];
-	}
-
-	/**
-	 * Removes all keys managed by the storage object.
-	 */
-	clear() {
-		Object.keys(this).forEach((key) => {
-			delete this[key];
-		});
-	}
-
-	/**
-	 * Retrieves an identifier
-	 * @param index - The position at which to look for an identifier. Index be at least zero
-	 * and must be less than length.
-	 */
-	key(index: number): string {
-		return Object.keys(this)[index];
-	}
-
-	/**
-	 * The number of values this instance is managing
-	 */
-	get length() {
-		return Object.keys(this).length;
-	}
-
-	/**
-	 * Gets or set a value from storage. Unlike getItem and setItem, the value is not required
-	 * to be a string. All values will be serialized to string prior to being stored. To
-	 * specify serialization, {@link StorageOptions#transformer}
-	 */
-	[key: string]: any;
 }

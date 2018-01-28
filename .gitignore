@@ -1,7 +1,11 @@
-node_modules
-typings
-dist
-sc_karma*.log
-out-tsc
+build
 coverage
+dist
+debug.log
+node_modules
+out-tsc
+
+typings
+sc_karma*.log
 documentation
+*.tgz

@@ -1,3 +1,5 @@
+var cuid = require('cuid');
+var tunnelIdentifier = cuid();
 module.exports = function (config) {
 	config.sauceLabs = {
 		testName: "h5webstorage",
@@ -5,6 +7,7 @@ module.exports = function (config) {
 		recordVideo: false,
 		recordScreenshots: false,
 		captureTimeout: 60000,
+		tunnelIdentifier: tunnelIdentifier
 	};
 
 	var testingLocally = !process.env.TRAVIS;
@@ -31,6 +34,12 @@ module.exports = function (config) {
 		config.sauceLabs.username = sauceCreds.username;
 		config.sauceLabs.accessKey = sauceCreds.accessKey;
 		config.sauceLabs.startConnect = true;
+		config.sauceLabs.connectOptions = {
+			doctor: true,
+			verbose: true,
+			verboseDebugging: true,
+			tunnelIdentifier: tunnelIdentifier
+		}
 	}
 	else {
 		config.sauceLabs.build = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')'
@@ -128,7 +137,7 @@ module.exports = function (config) {
 			appiumVersion: "1.6.1"
 		}*/
 	};
-	config.browsers = Object.keys(config.customLaunchers);
+	config.browsers = Object.keys(config.customLaunchers).filter((b,n)=> n==0);
 	if(config.reporters){
 		config.reporters.push("saucelabs");
 	}

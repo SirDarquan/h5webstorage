@@ -25,7 +25,7 @@ function createBacking(type: string) {
 			});
 		}
 	};
-};
+}
 
 function storageFactory(type: string) {
 	return (ngZone: NgZone, store: MockStore, transformer: MockSerdes, options: MockOptions): Storage => {

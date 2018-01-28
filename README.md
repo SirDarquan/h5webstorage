@@ -15,15 +15,14 @@
 2.  Import the module and the providers into your top level module:
 
   ```typescript
-	import {WebStorageModule, BROWSER_STORAGE_PROVIDERS} from "h5webstorage";
+	import {WebStorageModule} from "h5webstorage";
   ```
-3. Register the module and providers:
+3. Register the module:
 
   ```typescript
 	@NgModule({
 		...
-		imports:[WebStorageModule],
-		providers:[BROWSER_STORAGE_PROVIDERS]	
+		imports:[WebStorageModule.forRoot()],
 	})
   ```
 4. Inject the service into your class and use:
@@ -75,14 +74,12 @@ as its backing. To keep the library testable, the native localStorage object
 is injected. Normally this would mean importing two items from the library
 and placing them both in the providers array which you can do if you 
 want to but to simplify this common scenario, the `LOCAL_STORAGE_PORVIDER`
-was created which does this job for you and it's loaded as part of the
-`BROWSER_STORAGE_PROVIDERS`.
+was created which does this job for you.
 
 ### SessionStorage
 The `SessionStorage` object is just like the `LocalStorage` object except
 for using the native [sessionStorage][] object for backing. There is also a
-`SESSION_STORAGE_PROVIDER` to simplify registration, just like `LocalStorage`
-and it is also loaded with the `BROWSER_STORAGE_PROVIDERS`.
+`SESSION_STORAGE_PROVIDER` to simplify registration.
 
 ### @StorageProperty
 `StorageProperty` is a decorator used to simplifiy access to the stored values.
@@ -163,21 +160,6 @@ This library was designed with great configurability in mind but that normally
 comes at the price of simplicity. Fortunately, [angular2][]'s injector system
 allows us to make some shortcuts.
 
-#### BROWSER_STORAGE_PROVIDERS
-The `BROWSER_STORAGE_PROVIDERS` contain only the adapters to the native web storage
-objects and are the dependencies of the `LocalStorage` and `SessionStorage` services.
-The reason this was broken out was to first mimic actual availability of the native objects.
-If you're in a modern browser, the web storage api is always available and you can't
-have [localStorage][] without [sessionStorage][]. The second reason was to enable
-[angular universal][] compatibility. While that compatibility is not fully in place yet, 
-this is the foundation because this provider can be placed in the `bootstrap` function
-for the client-side code while a different, yet to be defined provider would be in the
-'static bootstrapper' in angular universal. With the adapters in the bootstrap code,
-the app can be a lot more selective about which components actually have access to
-storage because `LocalStorage` and `SessionStorage` will need to be added to the
-providers array of the component where access is required and this may actually be a
-better practice to use.
-
 #### LOCAL_STORAGE_OBJECT and SESSION_STORAGE_OBJECT
 These are the tokens used to inject the `localStorage` and `sessionStorage` native objects into
 the `LocalStorage` and `SessionStorage` objects respectivly. Using this, it is possible to have 
@@ -214,6 +196,11 @@ describe("My test suite", ()=>{
 ``` 
 With the example above, you can verify that the logic of the class places the correct value in storage
 or performs the correct actions based on what it finds in storage.
+
+## Angular-CLI, AOT and Universal
+With the tooling update, h5webstorage is fully angular-cli compliant and can be used in AOT scenarions,
+unlike the previous iterations. In theory, h5webstorage can also be used in Angular Universal scenarios
+as well but until there is a confirmed case of someone needing to do this, it'll remain a theory. 
 
 
 [angular2-localStorage]: https://github.com/marcj/angular2-localStorage
