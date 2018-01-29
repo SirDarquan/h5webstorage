@@ -6,6 +6,6 @@ node_modules
 out-tsc
 
 typings
-sc_karma*.log
+sc-karma*.log
 documentation
 *.tgz

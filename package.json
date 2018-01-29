@@ -3,7 +3,7 @@
   "version": "0.6.4",
   "description": "H5webstorage, an Angular library",
   "scripts": {
-    "test": "node ./tasks/test",
+    "test": "node ./tasks/test all",
     "build": "node ./tasks/build",
     "build:docs": "typedoc --out documentation --module commonjs --target es5 --exclude ./src/*.spec.ts --excludeExternals --ignoreCompilerErrors --mode file --excludePrivate --disableOutputCheck ./src/index.ts ./src/basestorage.ts ./src/localstorage.ts ./src/sessionstorage.ts ./src/storageproperty.ts",
     "g": "node ./node_modules/angular-librarian",

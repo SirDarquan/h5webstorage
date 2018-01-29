@@ -1,5 +1,3 @@
-var cuid = require('cuid');
-var tunnelIdentifier = cuid();
 module.exports = function (config) {
 	config.sauceLabs = {
 		testName: "h5webstorage",
@@ -7,11 +5,9 @@ module.exports = function (config) {
 		recordVideo: false,
 		recordScreenshots: false,
 		captureTimeout: 60000,
-		tunnelIdentifier: tunnelIdentifier
 	};
 
 	var testingLocally = !process.env.TRAVIS;
-
 
 	if (testingLocally) {
 		var fs = require("fs");
@@ -23,7 +19,6 @@ module.exports = function (config) {
 			throw new Error("SauceLabs credentials must supplied when testing locally.");
 		}
 		var credsFile = credsFileArg.match(/sauce-creds=(.+)/i)[1];
-		console.log("credsFile", credsFile);
 		var sauceCreds = null;
 		try {
 			sauceCreds = require(credsFile);
@@ -34,18 +29,12 @@ module.exports = function (config) {
 		config.sauceLabs.username = sauceCreds.username;
 		config.sauceLabs.accessKey = sauceCreds.accessKey;
 		config.sauceLabs.startConnect = true;
-		config.sauceLabs.connectOptions = {
-			doctor: true,
-			verbose: true,
-			verboseDebugging: true,
-			tunnelIdentifier: tunnelIdentifier
-		}
 	}
 	else {
 		config.sauceLabs.build = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')'
 		config.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
-		config.singleRun = true;
 	}
+	config.singleRun = true;
 
 	config.customLaunchers = {
 		SL_Chrome_Prime: {
@@ -96,37 +85,47 @@ module.exports = function (config) {
 			version: "latest",
 			platform: 'Windows 10'
 		},
+		SL_Edge_Mezzo: {
+			base: "SauceLabs",
+			browserName: "microsoftedge",
+			version: "latest-1",
+			platform: 'Windows 10'
+		},
 		SL_Edge_Omega: {
 			base: "SauceLabs",
 			browserName: "microsoftedge",
-			version: "13",
+			version: "latest-2",
 			platform: 'Windows 10'
-		},
+		}/*,
 		SL_Safari_Prime:{
 			base: "SauceLabs",
 			browserName: "safari",
-			version: "10.0",
-			platform: "OS X 10.11"
+			version: "11.0",
+			platform: "macOS 10.13",
+			disabled: true
 		},
 		SL_Safari_Mezzo:{
+			base: "SauceLabs",
+			browserName: "safari",
+			version: "10.1",
+			platform: "macOS 10.12",
+			disabled: true
+		},
+		SL_Safari_Omega:{
 			base: "SauceLabs",
 			browserName: "safari",
 			version: "9.0",
-			platform: "OS X 10.11"
+			platform: "OS X 10.11",
+			disabled: true
 		},
-		SL_Safari_Mezzo:{
-			base: "SauceLabs",
-			browserName: "safari",
-			version: "8.0",
-			platform: "OS X 10.10"
-		},
-		/*SL_iOS_Safari_Prime:{
+		SL_iOS_Safari_Prime:{
 			base: "SauceLabs",
 			browserName: "Safari",
 			platformName: "iOS",
 			platformVersion: "10.0",
 			deviceName: "iPhone Simulator",
-			appiumVersion: "1.6.1"
+			appiumVersion: "1.6.1",
+			disabled: true
 		},
 		SL_iOS_Safari_Omega:{
 			base: "SauceLabs",
@@ -134,10 +133,11 @@ module.exports = function (config) {
 			platformName: "iOS",
 			platformVersion: "9.3",
 			deviceName: "iPhone Simulator",
-			appiumVersion: "1.6.1"
+			appiumVersion: "1.6.1",
+			disabled: true
 		}*/
 	};
-	config.browsers = Object.keys(config.customLaunchers).filter((b,n)=> n==0);
+	config.browsers = Object.keys(config.customLaunchers).filter(b=> config.customLaunchers[b].disabled !== true);
 	if(config.reporters){
 		config.reporters.push("saucelabs");
 	}

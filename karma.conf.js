@@ -35,13 +35,13 @@ module.exports = function (config) {
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
-        browsers: ['Chrome', 'PhantomJS'],
+        browsers: [],
         singleRun: false,
         webpackServer: { noInfo: true }
     };
     const fullConfig = mergeCustomConfig(base, config);
-
-    config.set(fullConfig);
+	fs.writeFileSync("../karma-out.log", JSON.stringify(fullConfig));
+	config.set(fullConfig);
 };
 
 const mergeCustomConfig = (base, karmaConfig) => {
@@ -70,7 +70,7 @@ const mergeConfigs = (base, custom, karmaConfig) => {
         const arrays = mergeConfigArrays(base, custom);
         const objects = mergeConfigObjects(base, custom);
         const primitives = mergeConfigPrimitives(base, custom);
-        const customAttributes = Object.assign({}, arrays, objects, primitives);
+        const customAttributes = Object.assign(custom, arrays, objects, primitives);
 
         mergedConfig = Object.assign(
             {}, base, customAttributes
