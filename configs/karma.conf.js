@@ -30,6 +30,9 @@ module.exports = function (config) {
     var sauceLabsConfig = require("./sauceLabs.conf");
     sauceLabsConfig(base);
   }
+  else{
+	  base.reporters = ["progress"];
+  }
   config.set(base);
   return base;
 }

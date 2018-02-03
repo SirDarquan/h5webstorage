@@ -30,7 +30,7 @@ module.exports = function (config) {
             fixWebpackSourcePaths: true,
             reports: ['html', 'lcovonly']
         },
-        reporters: ['progress', 'coverage-istanbul'],
+        reporters: ['coverage-istanbul'],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
