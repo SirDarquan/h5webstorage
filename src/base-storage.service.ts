@@ -226,26 +226,27 @@ export abstract class BaseStorageService implements OnDestroy, Storage {
 		const prevValue = this.getProperty<string>('prevValue');
 		const currValue = this.serialize(this);
 		// tslint:disable-next-line:triple-equals
-		if (prevValue != currValue) {
-			const storage = this.getProperty<Storage>('storage');
-			const prevStorage = this.deserialize(prevValue);
-			Object.keys(this).forEach((key) => {
-				const _key = this.normalizeStorageKey(key, KeyDirection.To);
-				const value = this[key];
-				if (typeof this[key] !== 'undefined') {
-					storage.setItem(_key, this.serialize(this[key]));
-					delete prevStorage[key];
-				}
-			}, this);
-
-			for (const key in prevStorage) {
-				if (prevStorage.hasOwnProperty(key)) {
-					storage.removeItem(this.normalizeStorageKey(key, KeyDirection.To));
-				}
-			}
-
-			this.setProperty('prevValue', this.serialize(this));
+		if (prevValue == currValue) {
+			return;
 		}
+		const storage = this.getProperty<Storage>('storage');
+		const prevStorage = this.deserialize(prevValue);
+		Object.keys(this).forEach((key) => {
+			const _key = this.normalizeStorageKey(key, KeyDirection.To);
+			const value = this[key];
+			if (typeof value !== 'undefined') {
+				storage.setItem(_key, this.serialize(value));
+				delete prevStorage[key];
+			}
+		}, this);
+
+		for (const key in prevStorage) {
+			if (prevStorage.hasOwnProperty(key)) {
+				storage.removeItem(this.normalizeStorageKey(key, KeyDirection.To));
+			}
+		}
+
+		this.setProperty('prevValue', this.serialize(this));
 	}
 
 	private UpdateFromStorage() {
