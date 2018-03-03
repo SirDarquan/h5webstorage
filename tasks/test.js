@@ -28,7 +28,7 @@ function parseOptions(args){
 	args.forEach((arg, index)=>{
 		let value = arg.match(/^(\w+)/)[1];
 		switch(value){	//there are probably libraries that parse cmd line arguments...
-			case headless:
+			case 'headless':
 			case 'hl':
 			case 'h':
 				options.browsers = ['PhantomJS'];
